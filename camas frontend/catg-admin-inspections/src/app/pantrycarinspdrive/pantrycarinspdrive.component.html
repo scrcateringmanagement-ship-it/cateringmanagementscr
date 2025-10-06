@@ -1,0 +1,273 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="small-font">
+    <h4 class="main-head">PCD INSPECTION</h4>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="official_id">Official ID</label>
+            <input type="number" id="official_id" class="form-control" formControlName="official_id"
+                [ngClass]="{'is-invalid': form.get('official_id')?.touched && form.get('official_id')?.invalid}"
+                placeholder="Enter Official ID" />
+            <div *ngIf="form.get('official_id')?.touched && form.get('official_id')?.invalid" class="invalid-feedback">
+                Official ID is required and must be a number
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="inspe_officer_official_name">Officer Name</label>
+            <input type="text" id="inspe_officer_official_name" class="form-control"
+                formControlName="inspe_officer_official_name"
+                [ngClass]="{'is-invalid': form.get('inspe_officer_official_name')?.touched && form.get('inspe_officer_official_name')?.invalid}"
+                placeholder="Enter Officer Name" />
+            <div *ngIf="form.get('inspe_officer_official_name')?.touched && form.get('inspe_officer_official_name')?.invalid"
+                class="invalid-feedback">
+                Officer Name is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="designation">Designation</label>
+            <input type="text" id="designation" class="form-control" formControlName="designation"
+                [ngClass]="{'is-invalid': form.get('designation')?.touched && form.get('designation')?.invalid}"
+                placeholder="Enter Designation" />
+            <div *ngIf="form.get('designation')?.touched && form.get('designation')?.invalid" class="invalid-feedback">
+                Designation is required
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="coach_type">Coach Type</label>
+            <input type="text" id="coach_type" class="form-control" formControlName="coach_type"
+                [ngClass]="{'is-invalid': form.get('coach_type')?.touched && form.get('coach_type')?.invalid}"
+                placeholder="Enter Coach Type" />
+            <div *ngIf="form.get('coach_type')?.touched && form.get('coach_type')?.invalid" class="invalid-feedback">
+                Coach Type is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="date_of_inspe">Date of Inspection</label>
+            <input type="date" id="date_of_inspe" class="form-control" formControlName="date_of_inspe"
+                [ngClass]="{'is-invalid': form.get('date_of_inspe')?.touched && form.get('date_of_inspe')?.invalid}" />
+            <div *ngIf="form.get('date_of_inspe')?.touched && form.get('date_of_inspe')?.invalid"
+                class="invalid-feedback">
+                Date of Inspection is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="from_to">From / To</label>
+            <input type="text" id="from_to" class="form-control" formControlName="from_to"
+                [ngClass]="{'is-invalid': form.get('from_to')?.touched && form.get('from_to')?.invalid}" />
+            <div *ngIf="form.get('from_to')?.touched && form.get('from_to')?.invalid" class="invalid-feedback">
+                From/To date is required
+            </div>
+        </div>
+    </div>
+
+    <!-- PCM Details -->
+    <h3>PCM Details</h3>
+    <div formGroupName="pcm_details" class="row">
+        <div class="col-md-3 mb-3">
+            <label for="train_no">Train No</label>
+            <input type="text" id="train_no" class="form-control" formControlName="train_no"
+                [ngClass]="{'is-invalid': form.get('pcm_details.train_no')?.touched && form.get('pcm_details.train_no')?.invalid}"
+                placeholder="Enter Train No" />
+            <div *ngIf="form.get('pcm_details.train_no')?.touched && form.get('pcm_details.train_no')?.invalid"
+                class="invalid-feedback">
+                Train No is required
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label for="pantry_no">Pantry No</label>
+            <input type="text" id="pantry_no" class="form-control" formControlName="pantry_no"
+                [ngClass]="{'is-invalid': form.get('pcm_details.pantry_no')?.touched && form.get('pcm_details.pantry_no')?.invalid}"
+                placeholder="Enter Pantry No" />
+            <div *ngIf="form.get('pcm_details.pantry_no')?.touched && form.get('pcm_details.pantry_no')?.invalid"
+                class="invalid-feedback">
+                Pantry No is required
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label for="pcm_name">PCM Name</label>
+            <input type="text" id="pcm_name" class="form-control" formControlName="pcm_name"
+                [ngClass]="{'is-invalid': form.get('pcm_details.pcm_name')?.touched && form.get('pcm_details.pcm_name')?.invalid}"
+                placeholder="Enter PCM Name" />
+            <div *ngIf="form.get('pcm_details.pcm_name')?.touched && form.get('pcm_details.pcm_name')?.invalid"
+                class="invalid-feedback">
+                PCM Name is required
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label for="pcm_number">PCM Number</label>
+            <input type="text" id="pcm_number" class="form-control" formControlName="pcm_number"
+                [ngClass]="{'is-invalid': form.get('pcm_details.pcm_number')?.touched && form.get('pcm_details.pcm_number')?.invalid}"
+                placeholder="Enter PCM Number" />
+            <div *ngIf="form.get('pcm_details.pcm_number')?.touched && form.get('pcm_details.pcm_number')?.invalid"
+                class="invalid-feedback">
+                PCM Number is required
+            </div>
+        </div>
+    </div>
+
+    <!-- Staff Details -->
+    <h3>Staff Details</h3>
+    <div formGroupName="staff" class="row">
+        <div class="col-md-6 mb-3">
+            <label for="staff_id">Staff ID</label>
+            <input type="text" id="staff_id" class="form-control" formControlName="staff_id"
+                [ngClass]="{'is-invalid': form.get('staff.staff_id')?.touched && form.get('staff.staff_id')?.invalid}"
+                placeholder="Enter Staff ID" />
+            <div *ngIf="form.get('staff.staff_id')?.touched && form.get('staff.staff_id')?.invalid"
+                class="invalid-feedback">
+                Staff ID is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="staff_id_validity">Staff ID Validity</label>
+            <input type="date" id="staff_id_validity" class="form-control" formControlName="staff_id_validity"
+                [ngClass]="{'is-invalid': form.get('staff.staff_id_validity')?.touched && form.get('staff.staff_id_validity')?.invalid}" />
+            <div *ngIf="form.get('staff.staff_id_validity')?.touched && form.get('staff.staff_id_validity')?.invalid"
+                class="invalid-feedback">
+                Staff ID Validity is required
+            </div>
+        </div>
+    </div>
+
+    <!-- FASSAI Details -->
+    <h3>FASSAI Details</h3>
+    <div formGroupName="fassai" class="row">
+        <div class="col-md-6 mb-3">
+            <label for="fassai_id">FASSAI ID</label>
+            <input type="text" id="fassai_id" class="form-control" formControlName="fassai_id"
+                [ngClass]="{'is-invalid': form.get('fassai.fassai_id')?.touched && form.get('fassai.fassai_id')?.invalid}"
+                placeholder="Enter FASSAI ID" />
+            <div *ngIf="form.get('fassai.fassai_id')?.touched && form.get('fassai.fassai_id')?.invalid"
+                class="invalid-feedback">
+                FASSAI ID is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="fassai_id_validity">FASSAI Validity</label>
+            <input type="date" id="fassai_id_validity" class="form-control" formControlName="fassai_id_validity"
+                [ngClass]="{'is-invalid': form.get('fassai.fassai_id_validity')?.touched && form.get('fassai.fassai_id_validity')?.invalid}" />
+            <div *ngIf="form.get('fassai.fassai_id_validity')?.touched && form.get('fassai.fassai_id_validity')?.invalid"
+                class="invalid-feedback">
+                FASSAI Validity is required
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Fire Safety -->
+    <h3>Availability of Fire Safety</h3>
+    <div formGroupName="availability_of_fire_safety" class="row">
+        <div class="col-md-6 mb-3">
+            <label for="equipment">Equipment</label>
+            <input type="text" id="equipment" class="form-control" formControlName="equipment"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.equipment')?.touched && form.get('availability_of_fire_safety.equipment')?.invalid}"
+                placeholder="Enter Equipment" />
+            <div *ngIf="form.get('availability_of_fire_safety.equipment')?.touched && form.get('availability_of_fire_safety.equipment')?.invalid"
+                class="invalid-feedback">
+                Equipment is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="equipment_validity">Equipment Validity</label>
+            <input type="date" id="equipment_validity" class="form-control" formControlName="equipment_validity"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.equipment_validity')?.touched && form.get('availability_of_fire_safety.equipment_validity')?.invalid}" />
+            <div *ngIf="form.get('availability_of_fire_safety.equipment_validity')?.touched && form.get('availability_of_fire_safety.equipment_validity')?.invalid"
+                class="invalid-feedback">
+                Equipment Validity is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="Replacement_standard_heating_coils_with_higher">Replacement Standard Heating Coils</label>
+            <input type="text" id="Replacement_standard_heating_coils_with_higher" class="form-control"
+                formControlName="Replacement_standard_heating_coils_with_higher"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.Replacement_standard_heating_coils_with_higher')?.touched && form.get('availability_of_fire_safety.Replacement_standard_heating_coils_with_higher')?.invalid}"
+                placeholder="Enter Replacement Standard Heating Coils" />
+            <div *ngIf="form.get('availability_of_fire_safety.Replacement_standard_heating_coils_with_higher')?.touched && form.get('availability_of_fire_safety.Replacement_standard_heating_coils_with_higher')?.invalid"
+                class="invalid-feedback">
+                Replacement Standard Heating Coils field is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection">
+                Loose Equipment / Wiring
+            </label>
+            <input type="text" id="use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection"
+                class="form-control"
+                formControlName="use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection')?.touched && form.get('availability_of_fire_safety.use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection')?.invalid}"
+                placeholder=" Enter Replacement Standard Heating Coils" />
+            <div *ngIf="form.get('availability_of_fire_safety.use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection')?.touched && form.get('availability_of_fire_safety.use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection')?.invalid"
+                class="invalid-feedback">
+                This field is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="blocking_of_fire_safety_related_equipment">Blocking of Fire Safety Equipment</label>
+            <input type="text" id="blocking_of_fire_safety_related_equipment" class="form-control"
+                formControlName="blocking_of_fire_safety_related_equipment"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.blocking_of_fire_safety_related_equipment')?.touched && form.get('availability_of_fire_safety.blocking_of_fire_safety_related_equipment')?.invalid}"
+                placeholder=" Enter Blocking of Fire Safety Equipment" />
+            <div *ngIf="form.get('availability_of_fire_safety.blocking_of_fire_safety_related_equipment')?.touched && form.get('availability_of_fire_safety.blocking_of_fire_safety_related_equipment')?.invalid"
+                class="invalid-feedback">
+                Blocking Fire Safety field is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="placing_aluminium_foils">Placing Aluminium Foils</label>
+            <input type="text" id="placing_aluminium_foils" class="form-control"
+                formControlName="placing_aluminium_foils"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.placing_aluminium_foils')?.touched && form.get('availability_of_fire_safety.placing_aluminium_foils')?.invalid}"
+                placeholder="Enter Placing Aluminium Foils" />
+            <div *ngIf="form.get('availability_of_fire_safety.placing_aluminium_foils')?.touched && form.get('availability_of_fire_safety.placing_aluminium_foils')?.invalid"
+                class="invalid-feedback">
+                Placing Aluminium Foils field is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="action_taken">Action Taken</label>
+            <input type="text" id="action_taken" class="form-control" formControlName="action_taken"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.action_taken')?.touched && form.get('availability_of_fire_safety.action_taken')?.invalid}"
+                placeholder="Enter Action Taken" />
+            <div *ngIf="form.get('availability_of_fire_safety.action_taken')?.touched && form.get('availability_of_fire_safety.action_taken')?.invalid"
+                class="invalid-feedback">
+                Action Taken is required
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="any_other_remarks">Any Other Remarks</label>
+            <textarea id="any_other_remarks" rows="2" class="form-control" formControlName="any_other_remarks"
+                [ngClass]="{'is-invalid': form.get('availability_of_fire_safety.any_other_remarks')?.touched && form.get('availability_of_fire_safety.any_other_remarks')?.invalid}"
+                placeholder="Enter remarks"></textarea>
+            <div *ngIf="form.get('availability_of_fire_safety.any_other_remarks')?.touched && form.get('availability_of_fire_safety.any_other_remarks')?.invalid"
+                class="invalid-feedback">
+                Remarks are required
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 custom-m">
+            <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+
+                {{ selectedPantryCarId ? 'Update' : 'Submit' }}
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,154 @@
+<div class="header-container">
+  <h2>Approved Cards</h2>
+  <marquee class="scrolling-info">
+    You will be able to download the ID card for one time only. For further
+    downloads, request approval from the competent authority. <span class="blinking-star">*</span>E-enable
+    <span class="blinking-star">*</span>D-disable
+    <p>Cancel (Apply When employee left the Stall/Location)<span class="blinking-star"></span></p>
+  </marquee>
+</div>
+
+<button class="btn btn-danger" onclick="history.back()">← Back</button>
+<table class="applications-table" *ngIf="applications.length > 0">
+  <thead>
+    <tr>
+      <!-- <th>qr</th> -->
+      <th>Name</th>
+      <th>Contract Code</th>
+      <th>Location</th>
+      <th>License ID</th>
+      <th>Zone</th>
+      <th>Division</th>
+      <th>Valid From</th>
+      <th>Valid To</th>
+      <th>photo</th>
+      <th>ps doc</th>
+
+      <th>Aadhar</th>
+      <th>Signature</th>
+      <th>moneyReceipt</th>
+      <th>lastPaidFile</th>
+      <th>ddMrFile</th>
+      <th>annexure_one</th>
+      <th>annexure_two</th>
+      <th>annexure_three</th>
+
+      <th class="action-header">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let app of applications">
+      <!-- <qrcode [qrdata]="app.contract_code && app.aadhar_number"
+                [width]="120"
+                errorCorrectionLevel="M"></qrcode> -->
+      <td>{{ app.first_name }} {{ app.middle_initial }} {{ app.last_name }}</td>
+      <td>{{ app.contract_code }}</td>
+      <td>{{ app.location }}</td>
+      <td>{{ app.licensee_id }}</td>
+      <td>{{ app.zone }}</td>
+      <td>{{ app.division }}</td>
+      <td>{{ formatDate(app.date_of_application) }}</td>
+      <td>{{ formatDate(app.medical_valid_upto) }}</td>
+      <td><button class="btn-view" *ngIf="app.photo" (click)="viewImage(app.photo)">View Photo</button>
+        <span *ngIf="!app.photo">-</span>
+      </td>
+
+      <td><button class="btn-view" *ngIf="app.police_cert_file" (click)="viewImage(app.police_cert_file)">View
+          Photo</button>
+        <span *ngIf="!app.police_cert_file">-</span>
+      </td>
+     
+
+      <td><button class="btn-view" *ngIf="app.aadhar_card_file" (click)="viewImage(app.aadhar_card_file)">view
+          aadhar</button>
+        <span *ngIf="!app.aadhar_card_file">-</span>
+      </td>
+
+      <td><button class="btn-view" *ngIf="app.vendor_signature_file"
+          (click)="viewImage(app.vendor_signature_file)">ViewSignature</button>
+        <span *ngIf="!app.vendor_signature_file">-</span>
+      </td>
+
+      <td> <button class="btn-view" *ngIf="app.money_receipt_file"
+          (click)="viewImage(app.money_receipt_file)">ViewmoneyReceipt</button>
+        <span *ngIf="!app.money_receipt_file">-</span>
+      </td>
+
+      <td><button class="btn-view" *ngIf="app.last_paid_file"
+          (click)="viewImage(app.last_paid_file)">ViewPaidReceipt</button>
+        <span *ngIf="!app.last_paid_file">-</span>
+      </td>
+
+       <td><button class="btn-view" *ngIf="app.medical_cert_file" (click)="viewImage(app.medical_cert_file)">View
+          Photo</button>
+        <span *ngIf="!app.medical_cert_file">-</span>
+      </td>
+
+      <td><button class="btn-view" *ngIf="app.dd_mr_file" (click)="viewImage(app.dd_mr_file)">ViewddFile</button>
+        <span *ngIf="!app.dd_mr_file">-</span>
+      </td>
+      <!-- Annexure Two -->
+      <td>
+        <button class="btn-view" *ngIf="app.annexure_two_file" (click)="viewImage(app.annexure_two_file)">
+          View Annexure Two
+        </button>
+        <span *ngIf="!app.annexure_two_file">-</span>
+      </td>
+
+      <!-- Annexure Three -->
+      <td>
+        <button class="btn-view" *ngIf="app.annexure_three_file" (click)="viewImage(app.annexure_three_file)">
+          View Annexure Three
+        </button>
+        <span *ngIf="!app.annexure_three_file">-</span>
+      </td>
+
+
+
+
+
+      <!-- <td><a href="{{ app.medical_cert_file }}">viewmedical</a></td> -->
+      <!-- <td><a href="{{ app.aadhar_card_file }}">ViewAadhar</a></td> -->
+      <!-- <td><a href="{{ app.vendor_signature_file }}">ViewSignature</a></td> -->
+      <!-- <td><a href="{{ app.money_receipt_file }}">ViewmoneyReceipt</a></td> -->
+      <!-- <td><a href="{{ app.last_paid_file }}">ViewPaidReceipt</a></td> -->
+      <!-- <td><a href="{{ app.dd_mr_file }}"> ViewddFile</a></td> -->
+      <td class="action-cell">
+        <button class="btn-print" [disabled]="printedApps.has(app.id)" (click)="printApplication(app)">
+          {{ printedApps.has(app.id) ? "D" : "E" }}-Print ID
+        </button>
+        <button class="btn btn-danger" (click)="cancel(app)">Cancel</button>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal HTML -->
+<div class="image-modal" *ngIf="showModal">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeModal()">×</button>
+    <div class="image-container">
+      <img [src]="modalImageUrl" alt="Preview" class="modal-image" />
+    </div>
+  </div>
+</div>
+<div *ngIf="applications.length===0" class="noApprovedData">
+  <p> No Approved data avaialable </p>
+</div>
+
+
+
+
+
+
+
+<!-- <img
+  src="https://drive.google.com/thumbnail?id=1zTQqX_EiPM8LQfZqjkQM9PrBoMhBD_9z"
+  alt=""
+/>
+<img src="https://drive.google.com/thumbnail?id=1x0i_f-qriOEzvmTuukNjDJLbJHpi2TsV" /> -->
+
+<!-- <td class="qrCode"><img src="${qrCodeUrl}" alt="qrcode" style="width:100px; height:120px; object-fit:cover; border:1px solid #000;" /></td> -->
+
+<!-- <img src="${app.dcmSignatureUrl}" alt="DCM Signature" style="width:100px; height:120px; object-fit:cover; border:1px solid #000;" /> -->

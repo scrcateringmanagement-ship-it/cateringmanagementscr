@@ -1,0 +1,267 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="small-font">
+    <h3>Vande Bharat Inspection Form</h3>
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <label for="official_id">Official ID</label>
+            <input type="number" id="official_id" class="form-control" formControlName="official_id"
+                [ngClass]="{'is-invalid': form.get('official_id')?.touched && form.get('official_id')?.invalid}"
+                placeholder="Enter Official ID" />
+            <div *ngIf="form.get('official_id')?.touched && form.get('official_id')?.invalid" class="invalid-feedback">
+                Official ID is required and must be a number
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="inspe_officer_official_name">Officer Name</label>
+            <input type="text" id="inspe_officer_official_name" class="form-control"
+                formControlName="inspe_officer_official_name"
+                [ngClass]="{'is-invalid': form.get('inspe_officer_official_name')?.touched && form.get('inspe_officer_official_name')?.invalid}"
+                placeholder="Enter Officer Name" />
+            <div *ngIf="form.get('inspe_officer_official_name')?.touched && form.get('inspe_officer_official_name')?.invalid"
+                class="invalid-feedback">
+                Officer Name is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="designation">Designation</label>
+            <input type="text" id="designation" class="form-control" formControlName="designation"
+                [ngClass]="{'is-invalid': form.get('designation')?.touched && form.get('designation')?.invalid}"
+                placeholder="Enter Designation" />
+            <div *ngIf="form.get('designation')?.touched && form.get('designation')?.invalid" class="invalid-feedback">
+                Designation is required
+            </div>
+        </div>
+        <!-- Date of Inspection -->
+        <div class="col-md-4 mb-3">
+            <label for="date_of_insp">Date of Inspection</label>
+            <input type="date" id="date_of_insp" class="form-control" formControlName="date_of_insp"
+                [ngClass]="{'is-invalid': form.get('date_of_insp')?.touched && form.get('date_of_insp')?.invalid}" />
+            <div *ngIf="form.get('date_of_insp')?.touched && form.get('date_of_insp')?.invalid"
+                class="invalid-feedback">
+                Date of inspection is required
+            </div>
+        </div>
+
+    
+
+        <!-- From - To -->
+        <div class="col-md-4 mb-3">
+            <label for="from_to">Route (From - To)</label>
+            <input type="text" id="from_to" class="form-control" formControlName="from_to"
+                placeholder="Enter journey route (From - To)"
+                [ngClass]="{'is-invalid': form.get('from_to')?.touched && form.get('from_to')?.invalid}" />
+            <div *ngIf="form.get('from_to')?.touched && form.get('from_to')?.invalid" class="invalid-feedback">
+                Route is required
+            </div>
+        </div>
+
+        <!-- Short Service -->
+        <div class="col-md-4 mb-3">
+            <label for="short_service">Short Service</label>
+            <input type="text" id="short_service" class="form-control" formControlName="short_service"
+                placeholder="Mention any short service observed"
+                [ngClass]="{'is-invalid': form.get('short_service')?.touched && form.get('short_service')?.invalid}" />
+            <div *ngIf="form.get('short_service')?.touched && form.get('short_service')?.invalid"
+                class="invalid-feedback">
+                Short service entry required
+            </div>
+        </div>
+
+        <!-- Non Availability of Rail Neer -->
+        <div class="col-md-4 mb-3">
+            <label for="rail_neer_non_avail">Non Availability of Rail Neer</label>
+            <input type="text" id="rail_neer_non_avail" class="form-control" formControlName="rail_neer_non_avail"
+                placeholder="Enter details of Rail Neer availability"
+                [ngClass]="{'is-invalid': form.get('rail_neer_non_avail')?.touched && form.get('rail_neer_non_avail')?.invalid}" />
+            <div *ngIf="form.get('rail_neer_non_avail')?.touched && form.get('rail_neer_non_avail')?.invalid"
+                class="invalid-feedback">
+                Field is required
+            </div>
+        </div>
+
+        <!-- Quality -->
+        <div class="col-md-4 mb-3">
+            <label for="quality">Food Quality</label>
+            <input type="text" id="quality" class="form-control" formControlName="quality"
+                placeholder="Enter quality remarks"
+                [ngClass]="{'is-invalid': form.get('quality')?.touched && form.get('quality')?.invalid}" />
+            <div *ngIf="form.get('quality')?.touched && form.get('quality')?.invalid" class="invalid-feedback">
+                Food quality entry required
+            </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="col-md-4 mb-3">
+            <label for="quantity">Food Quantity</label>
+            <input type="text" id="quantity" class="form-control" formControlName="quantity"
+                placeholder="Enter quantity remarks"
+                [ngClass]="{'is-invalid': form.get('quantity')?.touched && form.get('quantity')?.invalid}" />
+            <div *ngIf="form.get('quantity')?.touched && form.get('quantity')?.invalid" class="invalid-feedback">
+                Food quantity entry required
+            </div>
+        </div>
+
+        <!-- Hygiene -->
+        <div class="col-md-4 mb-3">
+            <label for="hygiene">Hygiene</label>
+            <input type="text" id="hygiene" class="form-control" formControlName="hygiene"
+                placeholder="Enter hygiene observation"
+                [ngClass]="{'is-invalid': form.get('hygiene')?.touched && form.get('hygiene')?.invalid}" />
+            <div *ngIf="form.get('hygiene')?.touched && form.get('hygiene')?.invalid" class="invalid-feedback">
+                Hygiene observation is required
+            </div>
+        </div>
+
+        <!-- Misbehaviour -->
+        <div class="col-md-4 mb-3">
+            <label for="miss_behave">Misbehaviour</label>
+            <input type="text" id="miss_behave" class="form-control" formControlName="miss_behave"
+                placeholder="Mention any misbehaviour"
+                [ngClass]="{'is-invalid': form.get('miss_behave')?.touched && form.get('miss_behave')?.invalid}" />
+            <div *ngIf="form.get('miss_behave')?.touched && form.get('miss_behave')?.invalid" class="invalid-feedback">
+                Entry is required
+            </div>
+        </div>
+
+        <!-- Fine Imposed -->
+        <div class="col-md-4 mb-3">
+            <label for="fine_imposed">Fine Imposed (₹)</label>
+            <input type="number" id="fine_imposed" class="form-control" formControlName="fine_imposed"
+                placeholder="Enter fine amount if any"
+                [ngClass]="{'is-invalid': form.get('fine_imposed')?.touched && form.get('fine_imposed')?.invalid}" />
+            <div *ngIf="form.get('fine_imposed')?.touched && form.get('fine_imposed')?.invalid"
+                class="invalid-feedback">
+                Fine imposed is required
+            </div>
+        </div>
+
+        <!-- Warned -->
+        <div class="col-md-4 mb-3">
+            <label for="warned">Warned</label>
+            <input type="text" id="warned" class="form-control" formControlName="warned"
+                placeholder="Was any staff warned?"
+                [ngClass]="{'is-invalid': form.get('warned')?.touched && form.get('warned')?.invalid}" />
+            <div *ngIf="form.get('warned')?.touched && form.get('warned')?.invalid" class="invalid-feedback">
+                Entry required
+            </div>
+        </div>
+
+        <!-- Suitably Advised -->
+        <div class="col-md-4 mb-3">
+            <label for="suitably_adv">Suitably Advised</label>
+            <input type="text" id="suitably_adv" class="form-control" formControlName="suitably_adv"
+                placeholder="Mention advice given"
+                [ngClass]="{'is-invalid': form.get('suitably_adv')?.touched && form.get('suitably_adv')?.invalid}" />
+            <div *ngIf="form.get('suitably_adv')?.touched && form.get('suitably_adv')?.invalid"
+                class="invalid-feedback">
+                Field is required
+            </div>
+        </div>
+
+        <!-- Not Substantiated -->
+        <div class="col-md-4 mb-3">
+            <label for="not_Substantiated">Not Substantiated</label>
+            <input type="text" id="not_Substantiated" class="form-control" formControlName="not_Substantiated"
+                placeholder="Mention if any complaint not substantiated"
+                [ngClass]="{'is-invalid': form.get('not_Substantiated')?.touched && form.get('not_Substantiated')?.invalid}" />
+            <div *ngIf="form.get('not_Substantiated')?.touched && form.get('not_Substantiated')?.invalid"
+                class="invalid-feedback">
+                Field is required
+            </div>
+        </div>
+
+        <!-- Resolved Onboard -->
+        <div class="col-md-4 mb-3">
+            <label for="resolved_adv">Resolved Onboard</label>
+            <input type="text" id="resolved_adv" class="form-control" formControlName="resolved_adv"
+                placeholder="Mention any issues resolved onboard"
+                [ngClass]="{'is-invalid': form.get('resolved_adv')?.touched && form.get('resolved_adv')?.invalid}" />
+            <div *ngIf="form.get('resolved_adv')?.touched && form.get('resolved_adv')?.invalid"
+                class="invalid-feedback">
+                Entry required
+            </div>
+        </div>
+
+        <!-- Any Other Observation -->
+        <div class="col-md-4 mb-3">
+            <label for="any_other">Any Other</label>
+            <input type="text" id="any_other" class="form-control" formControlName="any_other"
+                placeholder="Mention any other points"
+                [ngClass]="{'is-invalid': form.get('any_other')?.touched && form.get('any_other')?.invalid}" />
+            <div *ngIf="form.get('any_other')?.touched && form.get('any_other')?.invalid" class="invalid-feedback">
+                Field is required
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="col-md-4 mb-3">
+            <label for="total">Total (Summary Count)</label>
+            <input type="text" id="total" class="form-control" formControlName="total" placeholder="Enter summary total"
+                [ngClass]="{'is-invalid': form.get('total')?.touched && form.get('total')?.invalid}" />
+            <div *ngIf="form.get('total')?.touched && form.get('total')?.invalid" class="invalid-feedback">
+                Field is required
+            </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="col-md-6 mb-3">
+            <label for="other_remarks">Remarks</label>
+            <textarea id="other_remarks" class="form-control" formControlName="other_remarks"
+                placeholder="Enter final remarks"
+                [ngClass]="{'is-invalid': form.get('other_remarks')?.touched && form.get('other_remarks')?.invalid}"></textarea>
+            <div *ngIf="form.get('other_remarks')?.touched && form.get('other_remarks')?.invalid"
+                class="invalid-feedback">
+                Remarks are required
+            </div>
+        </div>
+    </div>
+
+    <!-- PCM DETAILS -->
+    <h4 class="mt-4">PCM Details</h4>
+    <div formGroupName="pc_details" class="row">
+        <div class="col-md-4 mb-3">
+            <label for="T_Number">Train Number</label>
+            <input type="text" id="T_Number" class="form-control" formControlName="T_Number"
+                placeholder="Enter train number"
+                [ngClass]="{'is-invalid': form.get('pc_details')?.get('T_Number')?.touched && form.get('pc_details')?.get('T_Number')?.invalid}" />
+            <div *ngIf="form.get('pc_details')?.get('T_Number')?.touched && form.get('pc_details')?.get('T_Number')?.invalid"
+                class="invalid-feedback">
+                Train number is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="pcm_name">PCM Name</label>
+            <input type="text" id="pcm_name" class="form-control" formControlName="pcm_name"
+                placeholder="Enter PCM name"
+                [ngClass]="{'is-invalid': form.get('pc_details')?.get('pcm_name')?.touched && form.get('pc_details')?.get('pcm_name')?.invalid}" />
+            <div *ngIf="form.get('pc_details')?.get('pcm_name')?.touched && form.get('pc_details')?.get('pcm_name')?.invalid"
+                class="invalid-feedback">
+                PCM name is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="pcm_number">PCM Contact Number</label>
+            <input type="text" id="pcm_number" class="form-control" formControlName="pcm_number"
+                placeholder="Enter PCM contact number"
+                [ngClass]="{'is-invalid': form.get('pc_details')?.get('pcm_number')?.touched && form.get('pc_details')?.get('pcm_number')?.invalid}" />
+            <div *ngIf="form.get('pc_details')?.get('pcm_number')?.touched && form.get('pc_details')?.get('pcm_number')?.invalid"
+                class="invalid-feedback">
+                PCM number is required
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mt-4 text-center">
+        <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            {{ selectedId ? 'Update' : 'Submit' }}
+        </button>
+    </div>
+
+
+</form>

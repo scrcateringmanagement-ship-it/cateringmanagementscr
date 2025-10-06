@@ -1,0 +1,12 @@
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Fix Material datepicker inside modals */
+.cdk-overlay-container {
+  z-index: 1055 !important; /* higher than Bootstrap modal (1050) */
+}
+
+/* Optional: custom color override */
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f8f9fa; /* light gray fill */
+}

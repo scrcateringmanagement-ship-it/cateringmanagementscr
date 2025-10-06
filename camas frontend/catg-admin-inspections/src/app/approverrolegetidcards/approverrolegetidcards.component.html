@@ -1,0 +1,162 @@
+<div class="container py-4">
+  <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Verified ID Card Details By Office User</h5>
+    </div>
+
+    <div class="card-body p-4">
+      <!-- Search -->
+      <div class="mb-4">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-search"></i>
+          </span>
+          <input type="text" class="form-control" placeholder="Search In ID Card Details..." [(ngModel)]="searchText"
+            (keyup)="filteridcards()" />
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Applied On</th>
+              <th>Contract Code</th>
+              <th>Licensee Name</th>
+              <th>Vendor Name</th>
+              <th>V. Desig</th>
+              <th>Card Type</th>
+              <th>Station</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="filteredidcardsList.length === 0">
+              <td colspan="7" class="text-center py-3">No ID card details available</td>
+            </tr>
+            <tr *ngFor="let element of filteredidcardsList">
+              <td>{{ element.date_of_application | date:'dd-MM-yyyy' }}</td>
+              <td>{{ element.contract_code }}</td>
+              <td>{{ element.license_name }}</td>
+              <td>{{ element.first_name }}&nbsp;{{element.middle_initial}}&nbsp;{{ element.last_name }}</td>
+              <td>{{ element.designation }}</td>
+              <td>{{ element.type_of_card }}</td>
+              <td>{{ element.station }}</td>
+              <td>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-primary" (click)="ViewIdcarddetails(idcardModal, element)"
+                    title="View/Edit ID Card Details">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for ID Card Details -->
+<ng-template #idcardModal let-modal>
+  <div class="modal-content" style="width: 100vw; max-width: 100vw; margin: 0; height: 90vh;">
+    <div class="modal-header">
+      <h5 class="modal-title" id="idcardModalLabel">ID Card Details</h5>
+      <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body" *ngIf="selectedIdcard" style="display: flex; height: calc(100% - 70px);">
+      
+      <!-- Left Column: Text Data -->
+      <div class="text-column" style="flex: 1; overflow-y: auto; padding-right: 15px;">
+        <!-- Success / Error messages -->
+        <div *ngIf="successMessage" class="alert alert-success mb-3">{{ successMessage }}</div>
+        <div *ngIf="errorMessage" class="alert alert-danger mb-3">{{ errorMessage }}</div>
+
+        <div class="row">
+          <div class="col-12 mb-3"><strong>Name:</strong> {{ selectedIdcard.first_name }} {{ selectedIdcard.middle_initial }} {{ selectedIdcard.last_name }}</div>
+          <div class="col-12 mb-3"><strong>Aadhar Number:</strong> {{ selectedIdcard.aadhar_number }}</div>
+          <div class="col-12 mb-3"><strong>Date of Birth:</strong> {{ selectedIdcard.dob | date:'dd-MM-yyyy' }}</div>
+          <div class="col-12 mb-3"><strong>Gender:</strong> {{ selectedIdcard.gender }}</div>
+          <div class="col-12 mb-3"><strong>Address:</strong> {{ selectedIdcard.address }}</div>
+          <div class="col-12 mb-3"><strong>Phone Number:</strong> {{ selectedIdcard.phone_number }}</div>
+          <!-- <div class="col-12 mb-3"><strong>Email:</strong> {{ selectedIdcard.email }}</div> -->
+          <div class="col-12 mb-3"><strong>Designation:</strong> {{ selectedIdcard.designation }}</div>
+          <div class="col-12 mb-3"><strong>Position:</strong> {{ selectedIdcard.position }}</div>
+          <div class="col-12 mb-3"><strong>Card Type:</strong> {{ selectedIdcard.type_of_card }}</div>
+          <div class="col-12 mb-3"><strong>Date of Application:</strong> {{ selectedIdcard.date_of_application | date:'dd-MM-yyyy' }}</div>
+          <div class="col-12 mb-3"><strong>Zone:</strong> {{ selectedIdcard.zone }}</div>
+          <div class="col-12 mb-3"><strong>Division:</strong> {{ selectedIdcard.division }}</div>
+          <div class="col-12 mb-3"><strong>Station:</strong> {{ selectedIdcard.station }}</div>
+          <div class="col-12 mb-3"><strong>Medical By:</strong> {{ selectedIdcard.medical_by }}</div>
+          <div class="col-12 mb-3"><strong>Medical Date:</strong> {{ selectedIdcard.medical_date | date:'dd-MM-yyyy' }}</div>
+          <div class="col-12 mb-3"><strong>Medical Valid Upto:</strong> {{ selectedIdcard.medical_valid_upto | date:'dd-MM-yyyy' }}</div>
+          <div class="col-12 mb-3"><strong>Police Cert No:</strong> {{ selectedIdcard.police_cert_no }}</div>
+          <div class="col-12 mb-3"><strong>Police Cert Date:</strong> {{ selectedIdcard.police_cert_date | date:'dd-MM-yyyy' }}</div>
+          <div class="col-12 mb-3"><strong>Police Station:</strong> {{ selectedIdcard.police_station }}</div>
+          <div class="col-12 mb-3"><strong>LF/PLF/FINE/PI Paid Period:</strong> {{ selectedIdcard.last_paid_date.split(' to ')[0] | date:'dd-MM-yyyy' }} to {{ selectedIdcard.last_paid_date.split(' to ')[1] | date:'dd-MM-yyyy' }}</div>
+          <div class="col-12 mb-3"><strong>Licensee Remarks:</strong> {{ selectedIdcard.licensee_remarks }}</div>
+          <div class="col-12 mb-3"><strong>CCI Remarks:</strong> {{ selectedIdcard.cci_accpet_remarks}}</div>
+          <div class="col-12 mb-3"><strong>Office User Remarks:</strong> {{ selectedIdcard.officer_accept_remarks}} </div>
+          <div class="col-12 mb-3"><strong>Id Card Validity:</strong> {{ selectedIdcard.valid_upto}}</div>
+
+          <div class="col-12 mb-3" *ngIf="approvermenuselect === true">
+            <label for="remarks" class="form-label"><strong>Remarks:</strong></label>
+            <textarea id="remarks" name="remarks" [(ngModel)]="remarks" class="form-control" rows="4" placeholder="Enter remarks here..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Images / Files -->
+      <div class="image-column" style="flex: 1; overflow-y: auto; padding-left: 15px;">
+        
+        <!-- Loop through all files individually -->
+        <ng-container *ngFor="let file of [
+          {title:'Aadhaar Card', key:'aadhar_card_file', zoomKey:'aadhar'},
+          {title:'Photo', key:'photo', zoomKey:'photo'},
+          {title:'Annexure One Certificate', key:'medical_cert_file', zoomKey:'medical'},
+          {title:'Annexure Two Certificate', key:'annexure_two_file', zoomKey:'annexure_two'},
+          {title:'Annexure Three Certificate', key:'annexure_three_file', zoomKey:'annexure_three'},
+          {title:'Police Certificate', key:'police_cert_file', zoomKey:'police'},
+          {title:'LF/PLF/Fine/PI (Penal Interest) Advice Notice', key:'last_paid_file', zoomKey:'lastPaid'},
+          {title:'LF Paid Receipt (MERS/e-auction payment)', key:'dd_mr_file', zoomKey:'ddMr'},
+          {title:'Vendor Signature', key:'vendor_signature_file', zoomKey:'vendor'}
+        ]">
+          <div *ngIf="selectedIdcard[file.key]" class="mb-4">
+            <h6>{{ file.title }}</h6>
+            <ng-container *ngIf="isImage(selectedIdcard[file.key]); else pdfViewer">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn(file.zoomKey)"><i class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut(file.zoomKey)"><i class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom(file.zoomKey)"><i class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard[file.key]" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales[file.zoomKey] || 1) + ')'"
+                  [style.transformOrigin]="'center center'" style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #pdfViewer>
+              <pdf-viewer [src]="selectedIdcard[file.key]" [show-all]="true" [fit-to-page]="true"
+                style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" *ngIf="approvermenuselect === true && selectedIdcard" class="btn btn-success" (click)="forwardIdCard()" [disabled]="isLoading">
+        <i class="bi bi-send"></i> {{ isLoading ? 'Processing...' : 'Approve' }}
+      </button>
+      <button type="button" *ngIf="approvermenuselect === true && selectedIdcard" class="btn btn-danger" (click)="rejectIdCard()" [disabled]="isLoading">
+        <i class="bi bi-x-circle"></i> {{ isLoading ? 'Processing...' : 'Return' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</ng-template>
+

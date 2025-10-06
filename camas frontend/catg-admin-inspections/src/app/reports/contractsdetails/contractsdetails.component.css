@@ -1,0 +1,11 @@
+.table th {
+  font-weight: 600;
+}
+.table-responsive {
+  margin-top: 20px;
+}
+table {
+  table-layout: auto;
+  word-wrap: break-word;
+  word-break: break-word;
+}

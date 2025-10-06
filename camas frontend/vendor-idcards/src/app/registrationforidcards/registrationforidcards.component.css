@@ -1,0 +1,590 @@
+/* --- Additions for Password Visibility Toggle --- */
+.back-btn{
+  background-color: green;
+  padding: 10px;
+}
+.btn.btn-danger {
+    margin-top: 80px;
+    margin-left: 10px;
+}
+/* Container to hold input and icon */
+.password-container {
+    position: relative;
+    display: flex; /* Align input and icon */
+    align-items: center; /* Center icon vertically */
+  }
+  
+  /* Adjust password input width when icon is present */
+  .password-container input[type="password"],
+  .password-container input[type="text"] {
+    /* Optionally remove padding-right to prevent overlap if needed,
+       but absolute positioning of icon often handles this better */
+     padding-right: 40px; /* Make space for the icon */
+  }
+  
+  /* Style for the eye icon */
+  .toggle-password {
+    position: absolute;
+    right: 12px; /* Position icon inside the input area */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d; /* Icon color */
+    font-size: 1.1rem; /* Adjust icon size */
+    z-index: 2; /* Ensure icon is clickable above input */
+  }
+  
+  .toggle-password:hover {
+    color: #343a40; /* Darken icon on hover */
+  }
+  
+  /* --- End of Additions --- */
+  
+  
+  /* =========================================
+     Base Styles & Body
+     ========================================= */
+     body {
+      /* width: 100%; */
+      font-family: Arial, Helvetica, sans-serif; /* Added Helvetica as fallback */
+      margin: 0;
+      padding: 20px; /* Outer padding for the page */
+      background-color: #f7f7f7;
+      color: #333; /* Default text color */
+      line-height: 1.6;
+      font-size: 16px; /* Base font size */
+    }
+  
+    /* Ensure viewport meta tag is in your main HTML file for responsiveness:
+       <meta name="viewport" content="width=device-width, initial-scale=1.0"> */
+  
+    /* =========================================
+       Main Container
+       ========================================= */
+    .container {
+      max-width: 850px; /* Slightly wider max-width */
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 50px;
+     
+      background: #ffffff;
+      padding: 25px 30px; /* Adjusted padding */
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+  
+    /* =========================================
+       Headings
+       ========================================= */
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-top: 0; /* Remove default top margin */
+      margin-bottom: 25px;
+      font-size: 1.9rem; /* Slightly larger */
+      font-weight: 600;
+    }
+  
+    h3 {
+      margin-top: 35px; /* Increased spacing before section */
+      margin-bottom: 20px; /* Spacing after section heading */
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0; /* Slightly softer border */
+      color: #444;
+      font-size: 1.4rem; /* Slightly larger */
+      font-weight: 600;
+    }
+  
+    h4 {
+      margin-top: 25px;
+      margin-bottom: 15px;
+      color: #555;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  
+    /* =========================================
+       Form Layout & Elements
+       ========================================= */
+    .form-group {
+      margin-bottom: 22px; /* Consistent spacing */
+      position: relative; /* For potential absolute positioned elements inside */
+    }
+  
+    label {
+      display: block;
+      margin-bottom: 6px; /* Spacing between label and input */
+      font-weight: bold;
+      font-size: 0.95rem; /* Slightly smaller label */
+      color: #495057; /* Darker grey for labels */
+    }
+  
+    /* General Input Styling (Text, Date, Email, Password, Select, Textarea) */
+    /* Exclude password/text inside .password-container here for specific styling */
+    input[type="text"]:not(.password-container input),
+    input[type="date"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px; /* Adjusted padding */
+      border: 1px solid #ced4da; /* Standard bootstrap-like border color */
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1rem; /* Match base font size */
+      line-height: 1.5; /* Input line height */
+      background-color: #fff;
+      color: #495057;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+  
+    /* Specific styling for password/text inputs inside the container */
+    .password-container input[type="password"],
+    .password-container input[type="text"] {
+      width: 100%;
+      padding: 10px 40px 10px 12px; /* Padding: top, right(for icon), bottom, left */
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1rem;
+      line-height: 1.5;
+      background-color: #fff;
+      color: #495057;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+  
+  
+    textarea {
+      min-height: 80px; /* Minimum height for textareas */
+      resize: vertical; /* Allow vertical resize only */
+    }
+  
+    /* Focus states for inputs */
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #86b7fe; /* Bootstrap focus color */
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Bootstrap focus shadow */
+    }
+  
+    /* Placeholder text styling */
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: #adb5bd;
+      opacity: 1; /* Firefox */
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: #adb5bd;
+    }
+    ::-ms-input-placeholder { /* Microsoft Edge */
+      color: #adb5bd;
+    }
+  
+    /* Required field indicator using ::after pseudo-element */
+    .required:after {
+      content: " *";
+      color: #dc3545; /* Red color for asterisk */
+      margin-left: 2px;
+    }
+  
+    /* =========================================
+       Grid Layout (Flexbox)
+       ========================================= */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px; /* Gutter implementation */
+      margin-left: -15px;  /* Gutter implementation */
+    }
+  
+    .col {
+      flex: 1; /* Grow equally */
+      padding-right: 15px; /* Gutter implementation */
+      padding-left: 15px;  /* Gutter implementation */
+      min-width: 250px; /* Prevent columns from becoming too narrow */
+      margin-bottom: 0; /* Remove bottom margin here, handled by form-group */
+      box-sizing: border-box;
+    }
+  
+    /* If a form-group is the last child in a col, prevent extra margin */
+    .col .form-group:last-child {
+       margin-bottom: 0;
+    }
+  
+    /* Adjust row spacing - add margin between rows if needed */
+    .row + .row {
+        margin-top: 15px; /* Example spacing between consecutive rows */
+    }
+  
+  
+    /* =========================================
+       Radio Buttons & Checkboxes
+       ========================================= */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px 25px; /* Row and column gap */
+      padding-top: 5px; /* Align with text input top padding */
+    }
+  
+    .radio-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0; /* Override default label margin */
+      min-height: 40px; /* Touch target */
+      cursor: pointer;
+    }
+  
+    input[type="radio"],
+    input[type="checkbox"] {
+      width: 18px; /* Slightly smaller */
+      height: 18px;
+      margin-right: 8px;
+      flex-shrink: 0; /* Prevent shrinking */
+      cursor: pointer;
+    }
+  
+    /* =========================================
+       File Input
+       ========================================= */
+    input[type="file"] {
+      padding: 8px 12px;
+      background-color: #f8f9fa;
+      border: 1px dashed #ced4da; /* Dashed border convention */
+      line-height: 1.5;
+      color: #6c757d; /* Different color to indicate file input */
+      width: 100%; /* Make file input take full width */
+      box-sizing: border-box; /* Include padding/border in width */
+    }
+  
+    /* Style the button text within the file input */
+    input[type="file"]::file-selector-button {
+      padding: 8px 12px;
+      margin: -8px 12px -8px -12px; /* Adjust positioning */
+      border: none;
+      background-color: #6c757d;
+      color: #ffffff;
+      border-radius: 4px 0 0 4px; /* Round left corners */
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+  
+    input[type="file"]::file-selector-button:hover {
+      background-color: #5a6268;
+    }
+  
+    /* =========================================
+       Submit Button
+       ========================================= */
+    button[type="submit"] {
+      background-color: #198754; /* Bootstrap success green */
+      color: white;
+      padding: 12px 20px; /* Adjusted padding */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem; /* Slightly larger font */
+      font-weight: 600;
+      width: 100%;
+      transition: background-color 0.2s ease-in-out, opacity 0.2s;
+      margin-top: 15px; /* Space above button */
+    }
+  
+    button[type="submit"]:hover {
+      background-color: #157347; /* Darker green on hover */
+    }
+  
+    button[type="submit"]:disabled {
+      background-color: #adb5bd; /* Grey background when disabled */
+      border-color: #adb5bd;
+      cursor: not-allowed;
+      opacity: 0.65; /* Reduce opacity when disabled */
+    }
+  
+    /* =========================================
+       Validation & Message Styles
+       ========================================= */
+  
+    /* Highlight invalid fields after touch */
+    /* Apply also to password inputs within the container */
+    input.ng-touched.ng-invalid:not(.toggle-password), /* Exclude icon itself if it ever got classes */
+    .password-container input.ng-touched.ng-invalid,
+    select.ng-touched.ng-invalid,
+    textarea.ng-touched.ng-invalid {
+      border-color: #dc3545; /* Bootstrap danger red */
+    }
+  
+    /* Focus styling for invalid fields */
+    input.ng-touched.ng-invalid:focus:not(.toggle-password),
+    .password-container input.ng-touched.ng-invalid:focus,
+    select.ng-touched.ng-invalid:focus,
+    textarea.ng-touched.ng-invalid:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25); /* Red focus shadow */
+    }
+  
+  
+    /* Inline error message below field */
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem; /* Slightly larger error text */
+      margin-top: 5px;
+      display: block; /* Ensure it takes its own line */
+      /* Position relative to the form-group */
+      position: relative;
+      width: 100%;
+    }
+  
+    /* General Message Blocks (Error & Success) */
+    .error-msg, .success-msg {
+      padding: 12px 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+      border: 1px solid transparent;
+      font-size: 0.95rem;
+    }
+  
+    .error-msg {
+      background-color: #f8d7da; /* Light red background */
+      color: #842029; /* Dark red text */
+      border-color: #f5c2c7; /* Red border */
+    }
+  
+    .success-msg {
+      background-color: #d1e7dd; /* Light green background */
+      color: #0f5132; /* Dark green text */
+      border-color: #badbcc; /* Green border */
+    }
+  
+    /* =========================================
+       Utility & Separators
+       ========================================= */
+    hr {
+      border: 0;
+      height: 1px;
+      background-color: #e0e0e0;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+  
+  
+    /* =========================================
+       Responsiveness
+       ========================================= */
+    @media (max-width: 992px) { /* Larger tablet breakpoint */
+      .container {
+        max-width: 90%;
+        padding: 20px 25px;
+      }
+    }
+  
+    @media (max-width: 768px) { /* Tablet breakpoint */
+      .col {
+        flex: 0 0 100%; /* Stack columns */
+        max-width: 100%;
+        min-width: unset; /* Remove min-width */
+        /* Add margin between stacked columns if needed */
+         margin-bottom: 15px; /* Ensures spacing when stacked */
+      }
+       .col:last-child{
+         margin-bottom:0; /* Remove margin for last stacked col */
+       }
+       .row{
+          margin-right: -10px;
+          margin-left: -10px;
+       }
+        .col{
+          padding-right: 10px;
+          padding-left: 10px;
+       }
+  
+      h2 {
+        font-size: 1.7rem;
+      }
+      h3 {
+        font-size: 1.3rem;
+      }
+    }
+  
+    @media (max-width: 576px) { /* Mobile breakpoint */
+      body {
+        padding: 10px; /* Reduce body padding */
+      }
+  
+      .container {
+        padding: 15px;
+        margin: 10px auto;
+        border-radius: 6px;
+      }
+  
+      /* Apply mobile padding reduction to password inputs too */
+      input[type="text"]:not(.password-container input),
+      input[type="date"],
+      input[type="email"],
+      input[type="file"],
+      select,
+      textarea,
+      .password-container input[type="password"],
+      .password-container input[type="text"] {
+        padding: 10px 10px; /* Reduce input padding */
+        font-size: 0.95rem;
+      }
+      /* Adjust right padding specifically for password fields on mobile */
+       .password-container input[type="password"],
+       .password-container input[type="text"] {
+          padding-right: 35px; /* Slightly less space for icon on mobile */
+       }
+       .toggle-password {
+          right: 8px; /* Position icon closer to edge on mobile */
+       }
+  
+  
+       button[type="submit"] {
+         padding: 10px 15px;
+         font-size: 1rem;
+       }
+  
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+      h3 {
+         font-size: 1.2rem;
+      }
+      .radio-group {
+          gap: 10px 15px; /* Reduce gap on mobile */
+      }
+    }
+  
+    /* Optional: Animation for error messages */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+    .error-message, .error-msg, .success-msg {
+      animation: fadeIn 0.3s ease-out;
+    }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  h2, h3 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label span {
+    color: red;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    display: block;
+    margin: auto;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  } */
+  

@@ -1,0 +1,51 @@
+.table-responsive {
+    margin-top: 20px;
+  }
+  
+  .btn-action {
+    margin-right: 8px;
+  }
+      
+  .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+  }
+  
+  .card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+  }
+  
+  .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .badge {
+    font-size: 0.85em;
+    padding: 0.5em 0.75em;
+  }
+  
+  .table th {
+    font-weight: 600;
+  }
+
+
+  .pdf-viewer {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .list-group-item a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .list-group-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+  

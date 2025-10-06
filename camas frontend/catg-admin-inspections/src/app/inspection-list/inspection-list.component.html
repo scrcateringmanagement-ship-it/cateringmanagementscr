@@ -1,0 +1,94 @@
+<div class="filter-bar">
+  <label>From Date:</label>
+  <input type="date" [(ngModel)]="fromDate" (ngModelChange)="onDateChange()" />
+
+  <label>To Date:</label>
+  <input type="date" [(ngModel)]="toDate" (ngModelChange)="onDateChange()" />
+</div>
+
+<!-- Table View -->
+<div class="table-wrapper" *ngIf="screenIsLarge()">
+  <table>
+    <thead>
+      <tr>
+        <th>SNO</th>
+        <th>DATE OF CHECK</th>
+        <th>TRN0./ STN</th>
+        <th>NAME OF INSP. OFFICIAL</th>
+        <th>LICENSEE NAME</th>
+        <th>UNIT NUMBER</th>
+        <th>VENDOR DETAILS</th>
+        <th>DEFICIENCY DETAILS</th>
+        <th>FINE IMPOSED</th>
+        <th>FINE REALISED</th>
+        <th>BALANCE</th>
+        <th>PROSECUTION</th>
+        <th>MR NUMBER</th>
+        <th>MR DATE</th>
+        <th>REMARKS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of filteredInspections">
+        <td>{{ row.sno }}</td>
+        <td>{{ row.dateOfCheck }}</td>
+        <td>{{ row.trainStation }}</td>
+        <td>{{ row.official }}</td>
+        <td>{{ row.licensee }}</td>
+        <td>{{ row.unitNumber }}</td>
+        <td>{{ row.vendorDetails }}</td>
+        <td>{{ row.deficiency }}</td>
+        <td>₹{{ row.fineImposed }}</td>
+        <td>₹{{ row.fineRealised }}</td>
+        <td>₹{{ row.balance }}</td>
+        <td>₹{{ row.prosecution }}</td>
+        <td>{{ row.mrNumber }}</td>
+        <td>{{ row.mrDate }}</td>
+        <td>{{ row.remarks }}</td>
+        <td>         
+        </td>
+      </tr>
+      <tr *ngIf="filteredInspections.length === 0">
+        <td colspan="16">No inspections found for the selected date range.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Card View -->
+<div class="card-list" *ngIf="!screenIsLarge()">
+  <div class="card" *ngFor="let row of filteredInspections">
+    <p><strong>INSP. ID:</strong> {{ row.inspId }}</p>
+    <p><strong>Date:</strong> {{ row.dateOfCheck }}</p>
+    <p><strong>Train/Station:</strong> {{ row.trainStation }}</p>
+    <p><strong>Official:</strong> {{ row.official }}</p>
+    <p><strong>Licensee:</strong> {{ row.licensee }}</p>
+    <p><strong>Unit Number:</strong> {{ row.unitNumber }}</p>
+    <p><strong>Vendor Details:</strong> {{ row.vendorDetails }}</p>
+    <p><strong>Deficiency:</strong> {{ row.deficiency }}</p>
+    <p><strong>Fine Imposed:</strong> ₹{{ row.fineImposed }}</p>
+    <p><strong>Fine Realised:</strong> ₹{{ row.fineRealised }}</p>
+    <p><strong>Balance:</strong> ₹{{ row.balance }}</p>
+    <p><strong>Prosecution:</strong> ₹{{ row.prosecution }}</p>
+    <p><strong>MR Number:</strong> {{ row.mrNumber }}</p>
+    <p><strong>MR Date:</strong> {{ row.mrDate }}</p>
+    <p><strong>Remarks:</strong> {{ row.remarks }}</p>
+    <div class="contract-details">
+      <h4>Contract Details</h4>
+      <p><strong>Firm:</strong> {{ row.contractDetails.firmName }}</p>
+      <p><strong>Mobile:</strong> {{ row.contractDetails.mobile }}</p>
+      <p><strong>PAN:</strong> {{ row.contractDetails.pan }}</p>
+      <p><strong>Contract Code:</strong> {{ row.contractDetails.contractCode }}</p>
+      <p><strong>Activity:</strong> {{ row.contractDetails.activity }}</p>
+      <p><strong>Duration:</strong> {{ row.contractDetails.duration }}</p>
+      <p><strong>Start Date:</strong> {{ row.contractDetails.startDate }}</p>
+      <p><strong>End Date:</strong> {{ row.contractDetails.endDate }}</p>
+      <p><strong>Location:</strong> {{ row.contractDetails.location }}</p>
+      <p><strong>Stall:</strong> {{ row.contractDetails.stall }}</p>
+      <p><strong>Station:</strong> {{ row.contractDetails.stationName }}</p>
+    </div>
+  </div>
+  <div class="card" *ngIf="filteredInspections.length === 0">
+    <p>No inspections found for the selected date range.</p>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<!-- Simple Header -->
+<!-- <header class="simple-header">
+    <div class="header-logo">
+        <img src="/assets/originallogo.png" alt="Logo">
+    </div>
+    <div class="header-user">
+        <span>Welcome, User</span>
+    </div>
+</header> -->
+<!-- src/app/components/otp-verification/otp-verification.component.html -->
+
+<div class="otp-container">
+  <h2>OTP Verification</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Phone number form -->
+  <form [formGroup]="phoneForm" (ngSubmit)="requestOtp('0')" *ngIf="!otpSent">
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number</label>
+      <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Enter your phone number">
+      <div class="error-hint" *ngIf="phoneForm.get('phoneNumber')?.invalid && phoneForm.get('phoneNumber')?.touched">
+        Please enter a valid 10-digit phone number
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="phoneForm.invalid">Send OTP</button>
+  </form>
+
+  <!-- OTP verification form -->
+  <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()" *ngIf="otpSent">
+    <div class="form-group">
+      <label for="otp">Enter OTP</label>
+      <input type="text" id="otp" formControlName="otp" placeholder="Enter 8-digit OTP" maxlength="8">
+
+      <div class="timer" [ngClass]="{'expired': otpExpired}">Resend Otp
+        {{ otpExpired ? 'OTP Expired' : 'Time remaining: ' + remainingTime + 's' }}
+      </div>
+
+      <div class="error-hint" *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched">
+        Please enter a valid 8-digit OTP
+      </div>
+    </div>
+
+    <button type="submit">Verify OTP</button>
+    <button type="button" class="resend-btn" *ngIf="otpExpired" (click)="resendOtp()">Resend OTP</button>
+  </form>
+</div>
+
+<!-- <footer class="simple-footer">
+    <div class="footer-content">
+        <p>2024.All rights reserved GM OFFICE/SCR.This app best works in chrome 7.0 & above version</p>
+    </div>
+</footer> -->

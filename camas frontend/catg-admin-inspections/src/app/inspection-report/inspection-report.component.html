@@ -1,0 +1,99 @@
+<div class="filter-bar">
+  <div class="date-container">
+    <label>From Date:</label>
+    <input type="date" [(ngModel)]="fromDate" (ngModelChange)="onDateChange()" />
+  </div>
+  <div class="date-container">
+    <label>To Date:</label>
+    <input type="date" [(ngModel)]="toDate" (ngModelChange)="onDateChange()" />
+  </div>
+</div>
+
+<div class="print-button-container">
+  <button (click)="printReport()" class="print-button">Print Report</button>
+</div>
+
+<h3 style="text-align: center;">DETAILS OF INSPECTIONS CONDUCTED {{fromDate | date: 'dd-MM-yyyy'}} to {{toDate | date: 'dd-MM-yyyy'}}</h3>
+
+<!-- Table View -->
+<div class="table-wrapper" *ngIf="screenIsLarge()">
+  <table>
+    <thead>
+      <tr>
+        <th>SNO</th>
+        <th>DATE OF CHECK</th>
+        <th>TRN0./ STN</th>
+        <th>NAME OF INSP. OFFICIAL</th>
+        <th>UNIT NUMBER</th>
+        <th>VENDOR/LICENSEE DETAILS</th>
+        <th>DEFICIENCY DETAILS</th>
+        <th>FINE IMPOSED</th>
+        <th>FINE REALISED</th>
+        <th>BALANCE</th>
+        <th>PROSECUTION</th>
+        <th>MR NUMBER</th>
+        <th>MR DATE</th>
+        <th>REMARKS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of inspections">
+        <td>{{ row.sno }}</td>
+        <td>{{ row.inspection_date ? (row.inspection_date | date:'dd-MM-yyyy') : 'N/A' }}</td>
+        <td>{{ row.train_number || row.station || 'N/A' }}</td>
+        <td>{{ row.official_name || 'N/A' }}</td>
+        <td>{{ row.unit_number || 'N/A' }}</td>
+        <td>{{ getVendorDetails(row) }}</td>
+        <td>{{ row.deficiency_details || 'N/A' }}</td>
+        <td>₹{{ row.fine_imposed || 0 }}</td>
+        <td>₹{{ row.paidAmount || 0 }}</td>
+        <td>₹{{ row.fine_imposed ? (row.fine_imposed - (row.paidAmount || 0)) : 0 }}</td>
+        <td>{{ row.status_update === '2' ? 'Yes' : 'No' }}</td>
+        <td>{{ row.recieptNumber || 'N/A' }}</td>
+        <td>{{ row.paymentDate ? (row.paymentDate | date:'dd-MM-yyyy') : 'N/A' }}</td>
+        <td>{{ row.action_remarks || 'N/A' }}</td>
+      </tr>
+      <tr *ngIf="inspections.length === 0">
+        <td colspan="15">No inspections found for the selected date range.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Card View -->
+<div class="card-list" *ngIf="!screenIsLarge()">
+  <div class="card" *ngFor="let row of inspections">
+    <p><strong>INSP. ID:</strong> {{ row.id || 'N/A' }}</p>
+    <p><strong>Date:</strong> {{ row.inspection_date ? (row.inspection_date | date:'dd-MM-yyyy') : 'N/A' }}</p>
+    <p><strong>Train/Station:</strong> {{ row.train_number || row.station || 'N/A' }}</p>
+    <p><strong>Official ID:</strong> {{ row.official_id || 'N/A' }}</p>
+    <p><strong>Unit Number:</strong> {{ row.unit_number || 'N/A' }}</p>
+    <p><strong>Vendor/Licensee Details:</strong> {{ getVendorDetails(row) }}</p>
+    <p><strong>Deficiency:</strong> {{ row.deficiency_details || 'N/A' }}</p>
+    <p><strong>Fine Imposed:</strong> ₹{{ row.fine_imposed || 0 }}</p>
+    <p><strong>Fine Realised:</strong> ₹{{ row.paidAmount || 0 }}</p>
+    <p><strong>Balance:</strong> ₹{{ row.fine_imposed ? (row.fine_imposed - (row.paidAmount || 0)) : 0 }}</p>
+    <p><strong>Receipt Number:</strong> {{ row.recieptNumber || 'N/A' }}</p>
+    <p><strong>Payment Date:</strong> {{ row.paymentDate ? (row.paymentDate | date:'dd-MM-yyyy') : 'N/A' }}</p>
+    <p><strong>Remarks:</strong> {{ row.action_remarks || 'N/A' }}</p>
+
+    <div class="contract-details">
+      <h4>Contract Details</h4>
+      <p><strong>Firm:</strong> {{ row.vendor_name || 'N/A' }}</p>
+      <p><strong>Mobile:</strong> {{ row.vendor_id || 'N/A' }}</p>
+      <p><strong>PAN:</strong> N/A</p>
+      <p><strong>Contract Code:</strong> {{ row.unit_number || 'N/A' }}</p>
+      <p><strong>Activity:</strong> {{ row.deficiency_category || 'N/A' }}</p>
+      <p><strong>Duration:</strong> N/A</p>
+      <p><strong>Start Date:</strong> N/A</p>
+      <p><strong>End Date:</strong> N/A</p>
+      <p><strong>Location:</strong> {{ row.station || row.train_number || 'N/A' }}</p>
+      <p><strong>Stall:</strong> N/A</p>
+      <p><strong>Station:</strong> {{ row.station || 'N/A' }}</p>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="inspections.length === 0">
+    <p>No inspections found for the selected date range.</p>
+  </div>
+</div>

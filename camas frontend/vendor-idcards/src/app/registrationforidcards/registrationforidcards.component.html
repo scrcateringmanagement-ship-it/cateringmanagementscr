@@ -1,0 +1,550 @@
+<button class="btn btn-danger" onclick="history.back()"><- Back</button>
+    <div class="container">
+      <!-- <button class="back-btn" (click)="backToDashboard()">Back to Applycards</button> -->
+
+      <h2>Registration For Vendor ID Cards</h2>
+      <p>Please fill in this form to apply for a new Vendor ID Card. Fields marked with <span
+          style="color:red;">*</span> are required.</p>
+
+      <!-- Display Messages -->
+      <div *ngIf="successMsg" class="success-msg">{{ successMsg }}</div>
+      <div *ngIf="backendErrorMsg" class="error-msg">{{ backendErrorMsg }}</div>
+      <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
+
+      <form #form="ngForm" (ngSubmit)="submitForm(form)" novalidate>
+        <!-- Added new fields for administrative data -->
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">contractCode</label>
+              <input type="text" [(ngModel)]="contractCode" name="licenseeId" placeholder="contractCode"
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">licenseName </label>
+              <input type="text" [(ngModel)]="licenseName" name="licenseName " placeholder="licenseName "
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Zone</label>
+              <input type="text" [(ngModel)]="zone" name="zone" placeholder="zone" [readonly]="isAutoFilled">
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label class="required">Licensee ID</label>
+          <input type="text" [(ngModel)]="licenseeId" name="licenseeId" placeholder="Licensee ID">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label class="required">Contract ID</label>
+          <input type="text" [(ngModel)]="contractId" name="contractId" placeholder="Contract ID">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label class="required">Application Status</label>
+          <input type="text" [(ngModel)]="applicationStatus" name="applicationStatus" placeholder="Application Status">
+        </div>
+      </div> -->
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Division</label>
+              <input type="text" [(ngModel)]="division" name="division" placeholder="division"
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">station</label>
+              <input type="text" [(ngModel)]="station" name="station" placeholder="station" [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Stall Type</label>
+              <input type="text" [(ngModel)]="contractName" name="contractName" placeholder="Stall Type"
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">location</label>
+              <input type="text" [(ngModel)]="location" name="location" placeholder="location"
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Date of Application</label>
+              <input type="date" [(ngModel)]="dateOfApplication" name="dateOfApplication" [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">firm name</label>
+              <input type="text" [(ngModel)]="firmname" name="firmname" placeholder="firmname"
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">period start date</label>
+              <input type="date" [(ngModel)]="periodStartDate" name="periodStartDate" [readonly]="isAutoFilled">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">period end date</label>
+              <input type="date" [(ngModel)]="periodEndDate" name="periodEndDate" [readonly]="isAutoFilled">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">licenceId</label>
+              <input type="text" [(ngModel)]="licenceId" name="licenceId" laceholder="licenceId"
+                [readonly]="isAutoFilled">
+            </div>
+          </div>
+        </div>
+
+        <h3>Vendor basic Information</h3>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Name</label>
+              <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="Firstname" required
+                #firstNameRef="ngModel">
+              <span class="error-message"
+                *ngIf="firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)">First name is
+                required</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="middle-name">Middle Name</label>
+              <input type="text" [(ngModel)]="middleName" name="middleInitial" placeholder="middleName">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">SURNAME</label>
+              <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="Lastname" required
+                #lastNameRef="ngModel">
+              <span class="error-message" *ngIf="lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)">Last
+                name is required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">E-mail</label>
+              <input type="readonly" [(ngModel)]="email" name="email" placeholder="example@domain.com" required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailRef="ngModel">
+              <span class="error-message" *ngIf="emailRef.invalid && (emailRef.dirty || emailRef.touched)">
+                <span *ngIf="emailRef.errors?.['required']">Email is required</span>
+                <span *ngIf="emailRef.errors?.['pattern']">Please enter a valid email address</span>
+              </span>
+            </div>
+          </div>
+          <!-- <div class="col">
+        <div class="form-group">
+          <label class="required">Username</label>
+          <input type="text" [(ngModel)]="username" name="username" placeholder="Choose a username" required #usernameRef="ngModel">
+          <span class="error-message" *ngIf="usernameRef.invalid && (usernameRef.dirty || usernameRef.touched)">Username is required</span>
+        </div>
+      </div> -->
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Gender</label>
+              <div class="radio-group">
+                <label><input type="radio" [(ngModel)]="gender" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" [(ngModel)]="gender" name="gender" value="Female" required> Female</label>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Civil Status</label>
+              <select [(ngModel)]="civilStatus" name="civilStatus" required #civilStatusRef="ngModel">
+                <option value="" disabled>-- Select Status --</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
+              </select>
+              <span class="error-message"
+                *ngIf="civilStatusRef.invalid && (civilStatusRef.dirty || civilStatusRef.touched)">Civil status is
+                required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Position</label>
+              <select [(ngModel)]="position" name="position" required #positionRef="ngModel"
+                (ngModelChange)="onPositionChange($event)">
+                <option [ngValue]="null" disabled>-- Select Position --</option>
+                <option *ngFor="let pos of positions" [value]="pos.vendorPositionName">{{ pos.vendorPositionName }}
+                </option>
+
+              </select>
+
+              <span class="error-message" *ngIf="positionRef.invalid && (positionRef.dirty || positionRef.touched)">
+                Position is required
+              </span>
+            </div>
+          </div>
+          <!-- <div class="col">
+            <div class="form-group">
+              <label class="required">Year of Applying</label>
+              <select [(ngModel)]="year" name="year">
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+          </div> -->
+        </div>
+
+        <hr>
+        <h3>ID Card Details</h3>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Name (as it should appear on the card) Max length 25 chars</label>
+              <input type="text" [(ngModel)]="name" name="name" required #nameRef="ngModel"
+                placeholder="Full Name for ID Card" maxlength="25">
+              <span class="error-message" *ngIf="nameRef.invalid && (nameRef.dirty || nameRef.touched)">Name for card is
+                required</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Designation (on card)</label>
+              <input type="text" [(ngModel)]="designation" name="designation" placeholder="e.g., Electrician, Helper"
+                [readonly]="isAutoFilled">
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Date of Birth</label>
+              <input type="date" [(ngModel)]="dob" name="dob" #dobRef="ngModel" [max]="todayDate()">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Type Of Card</label>
+              <select [(ngModel)]="typeOfCard" name="typeOfCard">
+                <option value="new">New Application</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="col">
+              <div class="form-group">
+                <label class="required">Aadhar Number</label>
+                <input type="text" [(ngModel)]="aadharNumber" name="aadharNumber" #aadharRef="ngModel" pattern="\d{12}"
+                  placeholder="12-digit Aadhar" inputmode="numeric" maxlength="12" (blur)="check_Aadhar()"
+                  class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12);" />
+
+                <!-- Validation: Pattern -->
+                <span class="error-message"
+                  *ngIf="aadharRef.invalid && aadharRef.touched && aadharRef.errors?.['pattern']">
+                  Aadhar number must be 12 digits
+                </span>
+
+                <!-- Validation: Existence -->
+                <span class="error-message" *ngIf="aadharExist">
+                  Aadhar number already exists
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Phone Number</label>
+              <input type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" pattern="^\d{10}$"
+                placeholder="10-digit mobile" #phoneRef="ngModel" maxlength="10" />
+              <span class="error-message" *ngIf="phoneRef.invalid && phoneRef.touched && phoneRef.errors?.['pattern']">
+                Phone number must be 10 digits
+              </span>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Blood Group</label>
+              <select [(ngModel)]="blood_group" name="blood_group" #bloodRef="ngModel" required>
+                <option value="" disabled selected>Select blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A−</option>
+                <option value="B+">B+</option>
+                <option value="B-">B−</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB−</option>
+                <option value="O+">O+</option>
+                <option value="O-">O−</option>
+              </select>
+              <span class="error-message" *ngIf="bloodRef.invalid && bloodRef.touched">
+                Please select a valid blood group
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+          <label class="required">Address</label>
+          <textarea [(ngModel)]="address" name="address" rows="3" placeholder="Current residential address"></textarea>
+        </div>
+
+
+
+        <hr>
+        <h3>Required Documents & Verification</h3>
+        <div class="form-group">
+          <label class="required">Upload Photo of Employee (JPEG/JPG only, max 2MB)</label>
+          <input type="file" (change)="UploadFile($event,'photo')" required accept=".jpg,.jpeg" #photoInput>
+          <div *ngIf="loadingPhoto">Uploading...</div>
+          <span class="error-message" *ngIf="hasFileError('photo')">{{ getFileErrorMessage('photo') }}</span>
+          <span class="error-message" *ngIf="form.submitted && !photo && !hasFileError('photo')">Photo is
+            required.</span>
+        </div>
+
+        <h4>Police Verification Details:</h4>
+        <div class="form-group">
+          <label class="required">Name of the Police Station:</label>
+          <input type="text" [(ngModel)]="policeStation" name="policeStation" placeholder="Police station name">
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Police Certificate No:</label>
+              <input type="text" [(ngModel)]="policeCertNo" name="policeCertNo" placeholder="Certificate number">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Police Certificate Issued on:</label>
+              <input type="date" [(ngModel)]="policeCertDate" name="policeCertDate">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Upload Police Certificate (JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event ,'policeCertFile' )" accept=".jpg,.jpeg,.png"
+            #policeCertFileInput>
+          <div *ngIf="loadingPoliceCert">Uploading police certificate...</div>
+          <span class="error-message" *ngIf="hasFileError('policeCertFile')">{{ getFileErrorMessage('policeCertFile')
+            }}</span>
+          <span class="error-message" *ngIf="form.submitted && !policeCertFile && !hasFileError('policeCert')">Police
+            Certificate is required.</span>
+        </div>
+
+        <h4>Medical Examination Details:</h4>
+        <div class="form-group">
+          <label class="required">Medical Exam Conducted By:</label>
+          <input type="text" [(ngModel)]="medicalBy" name="medicalBy" placeholder="Doctor/Hospital name">
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Medical Certificate Date:</label>
+              <input type="date" [(ngModel)]="medicalDate" name="medicalDate">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label class="required">Medical Certificate Valid Upto:</label>
+              <input type="date" [(ngModel)]="medicalValidUpto" name="medicalValidUpto">
+            </div>
+          </div>
+        </div>
+
+        <!-- Medical Certificate Upload -->
+        <div class="form-group">
+          <label class="required">Upload Annexure One (JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'medicalCertFile')" accept=".jpg,.jpeg,.png"
+            #medicalCertFileInput>
+          <div *ngIf="loadingMedicalCert">Uploading medical certificate...</div>
+          <span class="error-message" *ngIf="hasFileError('medicalCertFile')">
+            {{ getFileErrorMessage('medicalCertFile') }}
+          </span>
+          <span class="error-message" *ngIf="form.submitted && !medicalCertFileUrl && !hasFileError('medicalCertFile')">
+            Medical Certificate is required.
+          </span>
+        </div>
+
+        <!-- Annexure Two Upload -->
+        <div class="form-group">
+          <label class="required">Upload Annexure Two (JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'annexure_two_file')" accept=".jpg,.jpeg,.png"
+            #annexureTwoFileInput>
+          <div *ngIf="loadingAnnexureTwo">Uploading annexure two...</div>
+          <span class="error-message" *ngIf="hasFileError('annexure_two_file')">
+            {{ getFileErrorMessage('annexure_two_file') }}
+          </span>
+          <span class="error-message" *ngIf="form.submitted && !annexure_two_url && !hasFileError('annexure_two_file')">
+            Annexure Two is required.
+          </span>
+        </div>
+
+        <!-- Annexure Three Upload -->
+        <div class="form-group">
+          <label class="required">Upload Annexure Three (JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'annexure_three_file')" accept=".jpg,.jpeg,.png"
+            #annexureThreeFileInput>
+          <div *ngIf="loadingAnnexureThree">Uploading annexure three...</div>
+          <span class="error-message" *ngIf="hasFileError('annexure_three_file')">
+            {{ getFileErrorMessage('annexure_three_file') }}
+          </span>
+          <span class="error-message"
+            *ngIf="form.submitted && !annexure_three_url && !hasFileError('annexure_three_file')">
+            Annexure Three is required.
+          </span>
+        </div>
+
+
+        <h4>Other Document Uploads:</h4>
+        <div class="form-group">
+          <label class="required">Upload Aadhar Card (JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'aadharCardFile')" accept=".jpg,.jpeg,.png"
+            #aadharCardFileInput>
+          <div *ngIf="loadingAadharCard">Uploading Aadhar card...</div>
+          <span class="error-message" *ngIf="hasFileError('aadharCardFile')">{{ getFileErrorMessage('aadharCardFile')
+            }}</span>
+          <span class="error-message" *ngIf="form.submitted && !aadharCardFile && !hasFileError('policeCert')">aadhar
+            Certificate is required.</span>
+
+        </div>
+
+        <div class="form-group">
+          <label class="required">Upload Vendor Signature (JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'vendorSignatureFile')" accept=".jpg,.jpeg,.png"
+            #vendorSignatureFileInput>
+          <div *ngIf="loadingVendorSignature">Uploading vendor signature...</div>
+          <span class="error-message" *ngIf="hasFileError('vendorSignatureFile')">{{
+            getFileErrorMessage('vendorSignatureFile') }}</span>
+          <span class="error-message"
+            *ngIf="form.submitted && !vendorSignatureFile && !hasFileError('vendorSignatureFile')">vendorSignatureFile
+            Certificate is required.</span>
+        </div>
+
+        <!-- <div class="form-group">
+          <label>Upload Money Receipt (Optional,JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'moneyReceiptFile')" accept=".jpg,.jpeg,.png"
+            #moneyReceiptFileInput>
+          <div *ngIf="loadingPhoto">Uploading photo...</div>
+          <div *ngIf="loadingMoneyReceipt">Uploading money receipt...</div>
+          <span class="error-message" *ngIf="hasFileError('moneyReceiptFile')">{{
+            getFileErrorMessage('moneyReceiptFile') }}</span>
+          <span class="error-message"
+            *ngIf="form.submitted && !moneyReceiptFile && !hasFileError('moneyReceiptFile')">moneyReceiptFile
+            Certificate is required.</span>
+        </div> -->
+
+        <hr>
+        <h3>Last Paid Details (License Fee/Proportionate Licensee Fee/Fine/Penal Interest):</h3>
+
+
+        <div class="form-group">
+          <label class="required">Upload LF/PLF/Fine/PI (Penal Interest) Advice Notice(JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'lastPaidFile')" accept=".jpg,.jpeg,.png" #lastPaidFileInput>
+          <div *ngIf="loadingPhoto">Uploading photo...</div>
+          <div *ngIf="loadingLastPaid">Uploading proof of last payment...</div>
+          <span class="error-message" *ngIf="hasFileError('lastPaidFile')">{{ getFileErrorMessage('lastPaidFile')
+            }}</span>
+          <span class="error-message"
+            *ngIf="form.submitted && !lastPaidFile && !hasFileError('lastPaidFile')">lastPaidFile Certificate is
+            required.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Upload LF Paid Receipt (MERS/e-auction payment)(JPG/PNG, max 1MB)</label>
+          <input type="file" (change)="UploadFile($event , 'ddMrFile')" accept=".jpg,.jpeg,.png" #ddMrFileInput>
+          <div *ngIf="loadingPhoto">Uploading photo...</div>
+          <div *ngIf="loadingDdMr">Uploading DD/MR document...</div>
+          <span class="error-message" *ngIf="hasFileError('ddMrFile')">{{ getFileErrorMessage('ddMrFile') }}</span>
+          <span class="error-message" *ngIf="form.submitted && !ddMrFile && !hasFileError('ddMrFile')">ddMrFile
+            Certificate is required.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="required">LF/PLF/FINE/PI PAID FOR THE PERIOD OF:</label><br>
+
+          <div class="row">
+            <div class="col-md-6">
+              <label>From:</label>
+              <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate" required
+                (ngModelChange)="onDateChange()">
+            </div>
+
+            <div class="col-md-6">
+              <label>To:</label>
+              <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate" required
+                (ngModelChange)="onDateChange()">
+            </div>
+          </div>
+
+          <div *ngIf="dateError" style="color:red;" class="mt-2">
+            FROM date must be earlier than or equal to TO date.
+          </div>
+        </div>
+
+
+
+        <div class="form-group">
+          <label class="required">Licensee Remarks:</label>
+          <textarea [(ngModel)]="licenseeRemarks" name="licenseeRemarks" rows="3"
+            placeholder="please type any remarks"></textarea>
+        </div>
+
+        <!-- Display Error Messages Again Near Submit Button -->
+        <div *ngIf="successMsg" class="success-msg">{{ successMsg }}</div>
+        <div *ngIf="backendErrorMsg" class="error-msg">{{ backendErrorMsg }}</div>
+        <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
+
+        <button type="submit" [disabled]="!form.valid || aadharExist ">
+          Submit Application
+        </button>
+      </form>
+    </div>

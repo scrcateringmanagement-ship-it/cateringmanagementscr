@@ -1,0 +1,382 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Applied ID Card Details</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search In ID Card Details..."
+                        [(ngModel)]="searchText" (keyup)="filteridcards()">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Applied On</th>
+                            <th>Contract Code</th>
+                            <th>LICENSEE NAME</th>
+                            <th>Vendor Name</th>
+                            <th>V. Desig</th>
+                            <th>Card Type</th>
+                            <th>Station</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="filteredidcardsList.length === 0">
+                            <td colspan="8" class="text-center py-3">No ID card details available</td>
+                        </tr>
+                        <tr *ngFor="let element of filteredidcardsList">
+                            <td>{{ element.date_of_application | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ element.contract_code }}</td>
+                            <td>{{ element.license_name }}</td>
+                            <td>{{ element.first_name }} {{ element.last_name }}</td>
+                            <td>{{ element.designation }}</td>
+                            <td>{{ element.type_of_card }}</td>
+                             <td>{{ element.station }}</td>
+                            <td>
+                                <span class="badge" [ngClass]="{
+                                    'bg-primary': element.status_update === '0',                                    
+                                    'bg-warning': element.status_update === 'RA' || 'Re',                                    
+                                    'bg-danger': element.status_update === 'R'
+                                  }">
+                                   {{
+      element.status_update === '0' ? 'Fresh' :
+      (element.status_update === 'RA' ? 'Re Applied' :
+      (element.status_update === 'R' ? 'Cancelled' :
+      (element.status_update === 'Re' ? 'Renewal' : element.status_update)))
+    }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary"
+                                        (click)="ViewIdcarddetails(idcardModal, element)"
+                                        title="View/Edit Contract Details">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for ID Card Details -->
+<ng-template #idcardModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="idcardModalLabel">ID Card Details</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedIdcard">
+            <div *ngIf="successMessage" class="alert alert-success mb-3">
+                {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Name:</strong> {{ selectedIdcard.first_name }} {{ selectedIdcard.middle_initial }}
+                    {{ selectedIdcard.last_name }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Aadhar Number:</strong> {{ selectedIdcard.aadhar_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date of Birth:</strong> {{ selectedIdcard.dob | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Gender:</strong> {{ selectedIdcard.gender }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Address:</strong> {{ selectedIdcard.address }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Phone Number:</strong> {{ selectedIdcard.phone_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Email:</strong> {{ selectedIdcard.email }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Designation:</strong> {{ selectedIdcard.designation }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Position:</strong> {{ selectedIdcard.position }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Card Type:</strong> {{ selectedIdcard.type_of_card }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date of Application:</strong> {{ selectedIdcard.date_of_application | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Zone:</strong> {{ selectedIdcard.zone }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Division:</strong> {{ selectedIdcard.division }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Station:</strong> {{ selectedIdcard.station }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical By:</strong> {{ selectedIdcard.medical_by }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical Date:</strong> {{ selectedIdcard.medical_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical Valid Upto:</strong> {{ selectedIdcard.medical_valid_upto | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Cert No:</strong> {{ selectedIdcard.police_cert_no }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Cert Date:</strong> {{ selectedIdcard.police_cert_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Station:</strong> {{ selectedIdcard.police_station }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>LF/PLF/FINE/PI Paid Period:</strong>
+                    {{ selectedIdcard.last_paid_date.split(' to ')[0] | date:'dd-MM-yyyy' }}
+                    to
+                    {{ selectedIdcard.last_paid_date.split(' to ')[1] | date:'dd-MM-yyyy' }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Licensee Remarks:</strong> {{ selectedIdcard.licensee_remarks || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="selectedIdcard.officer_reject_remarks != null">
+                    <strong>Office User Rejected Remarks:</strong> {{ selectedIdcard.officer_reject_remarks || 'N/A' }}
+                </div>
+     <div class="col-md-12 mb-3">
+          <strong>Files:</strong>
+
+          <!-- Aadhaar -->
+          <div *ngIf="selectedIdcard?.aadhar_card_file">
+            <h6>Aadhaar Card</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.aadhar_card_file); else aadharPdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('aadhar')"><i class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('aadhar')"><i class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('aadhar')"><i class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.aadhar_card_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['aadhar'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'"
+                  style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #aadharPdf>
+              <pdf-viewer [src]="selectedIdcard.aadhar_card_file" [show-all]="true" [fit-to-page]="true" style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- Photo -->
+          <div *ngIf="selectedIdcard?.photo">
+            <h6>Photo</h6>
+            <div class="mb-2 text-center">
+              <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('photo')"><i class="bi bi-zoom-in"></i></button>
+              <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('photo')"><i class="bi bi-zoom-out"></i></button>
+              <button class="btn btn-sm btn-secondary" (click)="resetZoom('photo')"><i class="bi bi-arrow-counterclockwise"></i></button>
+            </div>
+            <div class="image-container" style="overflow:auto; max-height:400px;">
+              <img [src]="selectedIdcard.photo" class="img-fluid rounded mb-3"
+                [style.transform]="'scale(' + (imageScales['photo'] || 1) + ')'"
+                [style.transformOrigin]="'center center'"
+                style="transition: transform 0.2s ease-in-out;" />
+            </div>
+          </div>
+
+           <!-- Annexure One -->
+          <div *ngIf="selectedIdcard?.medical_cert_file">
+            <h6>Annexure One Certificate</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.medical_cert_file); else medicalPdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('medical')"><i
+                    class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('medical')"><i
+                    class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('medical')"><i
+                    class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.medical_cert_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['medical'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'" style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #medicalPdf>
+              <pdf-viewer [src]="selectedIdcard.medical_cert_file" [show-all]="true" [fit-to-page]="true"
+                style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- Annexure Two -->
+          <div *ngIf="selectedIdcard?.annexure_two_file">
+            <h6>Annexure Two Certificate</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.annexure_two_file); else annexureTwoPdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('annexure_two')"><i
+                    class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('annexure_two')"><i
+                    class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('annexure_two')"><i
+                    class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.annexure_two_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['annexure_two'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'" style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #annexureTwoPdf>
+              <pdf-viewer [src]="selectedIdcard.annexure_two_file" [show-all]="true" [fit-to-page]="true"
+                style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- Annexure Three -->
+          <div *ngIf="selectedIdcard?.annexure_three_file">
+            <h6>Annexure Three Certificate</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.annexure_three_file); else annexureThreePdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('annexure_three')"><i
+                    class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('annexure_three')"><i
+                    class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('annexure_three')"><i
+                    class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.annexure_three_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['annexure_three'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'" style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #annexureThreePdf>
+              <pdf-viewer [src]="selectedIdcard.annexure_three_file" [show-all]="true" [fit-to-page]="true"
+                style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- Police -->
+          <div *ngIf="selectedIdcard?.police_cert_file">
+            <h6>Police Certificate</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.police_cert_file); else policePdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('police')"><i class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('police')"><i class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('police')"><i class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.police_cert_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['police'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'"
+                  style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #policePdf>
+              <pdf-viewer [src]="selectedIdcard.police_cert_file" [show-all]="true" [fit-to-page]="true" style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- Last Paid -->
+          <div *ngIf="selectedIdcard?.last_paid_file">
+            <h6>LF/PLF/Fine/PI (Penal Interest) Advice Notice</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.last_paid_file); else lastPaidPdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('lastPaid')"><i class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('lastPaid')"><i class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('lastPaid')"><i class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.last_paid_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['lastPaid'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'"
+                  style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #lastPaidPdf>
+              <pdf-viewer [src]="selectedIdcard.last_paid_file" [show-all]="true" [fit-to-page]="true" style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- DD/MR -->
+          <div *ngIf="selectedIdcard?.dd_mr_file">
+            <h6>LF Paid Receipt (MERS/e-auction payment)</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.dd_mr_file); else ddMrPdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('ddMr')"><i class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('ddMr')"><i class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('ddMr')"><i class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.dd_mr_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['ddMr'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'"
+                  style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #ddMrPdf>
+              <pdf-viewer [src]="selectedIdcard.dd_mr_file" [show-all]="true" [fit-to-page]="true" style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+
+          <!-- Vendor Signature -->
+          <div *ngIf="selectedIdcard?.vendor_signature_file">
+            <h6>Vendor Signature</h6>
+            <ng-container *ngIf="isImage(selectedIdcard.vendor_signature_file); else vendorPdf">
+              <div class="mb-2 text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn('vendor')"><i class="bi bi-zoom-in"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut('vendor')"><i class="bi bi-zoom-out"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="resetZoom('vendor')"><i class="bi bi-arrow-counterclockwise"></i></button>
+              </div>
+              <div class="image-container" style="overflow:auto; max-height:400px;">
+                <img [src]="selectedIdcard.vendor_signature_file" class="img-fluid rounded mb-3"
+                  [style.transform]="'scale(' + (imageScales['vendor'] || 1) + ')'"
+                  [style.transformOrigin]="'center center'"
+                  style="transition: transform 0.2s ease-in-out;" />
+              </div>
+            </ng-container>
+            <ng-template #vendorPdf>
+              <pdf-viewer [src]="selectedIdcard.vendor_signature_file" [show-all]="true" [fit-to-page]="true" style="height:400px;" class="mb-3"></pdf-viewer>
+            </ng-template>
+          </div>
+        </div>
+                <div class="col-md-12 mb-3" *ngIf="ccimenuselect === true">
+                    <div class="mb-3">
+                        <label for="remarks" class="form-label"><strong>CCI Remarks:</strong></label>
+                        <textarea id="remarks" name="remarks" [(ngModel)]="remarks" class="form-control" rows="4"
+                            placeholder="Enter remarks for forward/reject..." required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" *ngIf="ccimenuselect === true && selectedIdcard" class="btn btn-success"
+                (click)="forwardIdCard()" [disabled]="isLoading">
+                <i class="bi bi-send"></i> {{ isLoading ? 'Processing...' : 'Forward' }}
+            </button>
+            <button type="button" *ngIf="ccimenuselect === true && selectedIdcard" class="btn btn-danger"
+                (click)="rejectIdCard()" [disabled]="isLoading">
+                <i class="bi bi-x-circle"></i> {{ isLoading ? 'Processing...' : 'Reject' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>

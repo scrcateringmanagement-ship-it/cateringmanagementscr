@@ -1,0 +1,147 @@
+
+<div class="apply-dashboard">
+    <div class="dashboard-header">
+      <h1>Contract application cards</h1>
+      <button class="refresh-btn" (click)="refreshData($event)">Refresh Data</button>
+    </div>
+  
+    <!-- Dashboard View -->
+    <div *ngIf="!isDetailView" class="dashboard-view">
+      <div *ngIf="userData && userData.contract_details && userData.contract_details.length > 0; else noData">
+        <div class="contract-grid">
+          <div *ngFor="let contract of userData.contract_details" class="contract-card">
+            <h3>{{ contract.contract_station_name }}__{{contract.contract_code}}</h3>
+            <div class="contract-summary">
+              <p><strong>LicenseeName:</strong> {{ contract.Licensee_name }}</p>
+              <p><strong>Firm Nam:</strong> {{ contract.Licensee_firm_name }}</p>
+              <p><strong>Start Date:</strong> {{ contract.contract_details_start_date  | date: 'dd-MM-yyyy' }}</p>
+              <p><strong>End Date:</strong>{{ contract.contract_details_end_date  | date: 'dd-MM-yyyy' }}</p>
+              <p><strong>Station:</strong> {{ contract.contract_station_name}}</p>
+              <p><strong>Stall:</strong> {{ contract.contract_stall}}</p>
+              <p><strong>Permitted ID Cards:</strong>{{contract.contract_details_no_of_employees}}</p>
+              <p><strong>Applied id cards:</strong>{{contract.current_count}}</p>
+            </div>
+            <div class="contract-actions">
+              <!-- <button (click)="onApply(contract)" class="apply-btn">Apply</button> -->
+               <!-- <button (click)="selectedContractId = contract.contract_id">View</button> -->
+              <button (click)="onView(contract)" class="view-btn">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noData>
+        <div class="no-data-message">
+          <p>No contract data available. Please check your account details or try refreshing.</p>
+        </div>
+      </ng-template>
+    </div>
+  
+<div *ngIf="isDetailView && selectedContract" class="homeburger">
+ <div class="homeAndBack-btn">
+  <div class="burger-icon">
+  <div class="burger-icon"  (click)="toggleBurger()">☰</div>
+  <ul *ngIf="openBurger" class="burger-menu" >
+    <!-- <li (click)="backToDashboard()"><i class="bi bi-house"></i> Home </li> -->
+    <!-- <li (click)="RenewCrad()"><i class="bi bi-arrow-repeat"></i> Renewal</li> -->
+    <li (click)="onApply(selectedContract)"><i class="bi bi-person-plus"></i> Apply</li>
+    <li (click)="AppliedCard()"><i class="bi bi-check-circle text-success"></i> Applied Card</li>
+    <li (click)="RenewCard()"><i class="bi bi-person-plus"></i> Renew Card</li>
+    <li (click)="RejectedCards()"><i class="bi bi-x-circle ms-1"></i>Rejected Card</li>
+    <li (click)="Approvedcard()"><i class="bi bi-check-circle ms-1"></i>Approved Card</li>
+    <li (click)="cancelcard()"><i class="bi bi-check-circle ms-1"></i>cancelled Card</li>
+  
+  </ul>
+  </div>
+  <div class="back-buttton"> <button class="back-btn" (click)="onBack()">Back</button></div>
+</div>
+     
+ 
+  
+       <!-- <button class="back-btn" (click)="backToDashboard()">Back to Dashboard</button>
+
+       <div class="redirect-headerCompo">
+          <button class="btn-primary" (click)="RenewCrad()">Renewal Card</button>
+          <button class="apply-btn" (click)="onApply(selectedContract)">Apply</button>
+          <button class="btn-btn-danger" (click)="AppliedCard()">Applied cards</button>
+          <button class="btn-btn-reject" (click)="RejectedCards()">RejectedCards</button>
+          <button class="btn-warning" (click)="Approvedcard()">Approved cards</button>
+        </div>  -->
+        <!-- <h2>Contract Details: {{ selectedContract.contract_station_name }}___{{selectedContract.contract_code}}</h2> -->
+      <div class="detail-container">
+        <div class="detail-section">
+          <h3>Licensee Information</h3>
+          <div class="detail-row">
+            <p><strong>Licensee Name:</strong> {{ selectedContract.Licensee_name }}</p>
+            <p><strong>Licensee Mobile:</strong> {{ selectedContract.Licensee_mobile }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Firm Name:</strong> {{ selectedContract.Licensee_firm_name || 'N/A' }}</p>
+            <p><strong>PAN:</strong> {{ selectedContract.Lincensee_pan || 'N/A' }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Division:</strong> {{ selectedContract.Lincensee_division }}</p>
+            <p><strong>Zone:</strong> {{ selectedContract.Lincensee_zone }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Licensee Type:</strong> {{ selectedContract.Lincensee_type }}</p>
+            <p><strong>Licensee Status:</strong> {{ selectedContract.Lincensee_status }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>contract:</strong> {{ selectedContract.contract_code }}</p>
+       
+          </div>
+        </div>
+  
+        <div class="detail-section">
+          <h3>Contract Information</h3>
+          <div class="detail-row">
+            <p><strong>Contract Type:</strong> {{ selectedContract.contract_type }}</p>
+            <p><strong>Contract Status:</strong> {{ selectedContract.contract_status }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Start Date:</strong> {{ selectedContract.contract_details_start_date | date: 'dd-MM-yyyy' }}</p>
+            <p><strong>End Date:</strong> {{ selectedContract.contract_details_end_date | date: 'dd-MM-yyyy' }}</p>
+            
+          </div>
+          <div class="detail-row">
+            <p><strong>Duration:</strong> {{ selectedContract.contract_details_duration }}</p>
+            <p><strong>No. of Employees:</strong> {{ selectedContract.contract_details_no_of_employees }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Station Name:</strong> {{ selectedContract.contract_station_name }}</p>
+            <p><strong>Stall:</strong> {{ selectedContract.contract_stall }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Zone:</strong> {{ selectedContract.contract_zone }}</p>
+            <p><strong>Division:</strong> {{ selectedContract.contract_division }}</p>
+          </div>
+        </div>
+  
+        <div class="detail-section">
+          <h3>Operation Details</h3>
+          <div class="detail-row">
+            <p><strong>Activity:</strong> {{ selectedContract.contract_details_activity }}</p>
+            <p><strong>Award Status:</strong> {{ selectedContract.contract_details_award_status }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Mode of Operation:</strong> {{ selectedContract.contract_details_mode_of_operation }}</p>
+            <p><strong>Pay Mode:</strong> {{ selectedContract.contract_details_pay_mode }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Remarks:</strong> {{ selectedContract.contract_details_remarks || 'None' }}</p>
+            <p><strong>Created:</strong> {{ selectedContract.created_at | date:'medium' }}</p>
+          </div>
+          <div class="detail-row">
+            <p><strong>Updated:</strong> {{ selectedContract.updated_at | date:'medium' }}</p>
+            <p><strong>Termination Date:</strong> {{ selectedContract.termination_date || 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="detail-actions">
+        <!-- <button (click)="onApply(selectedContract)" class="apply-btn">Apply</button> -->
+      </div>
+    </div>
+  </div>
+  

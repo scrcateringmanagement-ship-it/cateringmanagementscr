@@ -1,0 +1,44 @@
+<header class="simple-header">
+    <div class="header-logo">
+      <img src="./assets/originallogo.png" alt="Logo" class="logo" />
+    </div>
+  
+    <nav class="header-nav">
+      <ul class="nav-menu">
+        <ng-container *ngIf="isLoggedIn; else guestMenu">
+          <!-- Menu for logged-in users -->
+           <!-- <li><span class="nav-item" (click)="backToDashboard()"><i class="bi bi-house"></i> Home </span></li> -->
+          <!-- <li><span class="nav-item" (click)="applyCard()"><i class="bi bi-person-badge"></i> ID Card</span></li> -->
+          <!-- <li><span class="nav-item">Renew card</span></li>
+          <li><span class="nav-item">Cancellation request</span></li>
+          <li><span class="nav-item">Applied cards</span></li> -->
+          <li><span class="nav-item" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</span></li>
+          <div class="user-profile" 
+          (mouseenter)="showUserData()" 
+          (mouseleave)="hideUserData()">
+       <div class="nav-item">Welcome, <i class="bi bi-person-circle"></i> {{mobileNumb}}</div>
+       
+       <!-- User data popup -->
+       <!-- <div class="user-data-popup" *ngIf="showUserDataPopup && userData">
+         <div class="popup-header">User Profile</div>
+         <div class="popup-content">
+           <div class="data-row" *ngFor="let entry of userDataEntries">
+             <strong>{{ entry.label }}</strong> : {{ entry.value }}
+           </div>
+         </div>
+       </div> -->
+     </div>
+        </ng-container>
+  
+        <ng-template #guestMenu>
+            <div class="welcome-message">
+                <h2>Welcome to the Catering Management</h2>
+              </div>
+          <!-- Menu for guests -->
+          <!-- <li><span class="nav-item">Login</span></li>
+          <li><span class="nav-item">Sign up</span></li> -->
+        </ng-template>
+      </ul>
+    </nav>
+  </header>
+  

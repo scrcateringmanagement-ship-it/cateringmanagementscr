@@ -1,0 +1,110 @@
+<!-- <br><br><br><br> -->
+<button class="btn btn-danger custom-m" onclick="history.back()"><- Back</button>
+    <div class="cancelled-container">
+      <h2>Cancelled ID Cards</h2>
+      <div class="loading-spinner" *ngIf="loading">
+        <div class="spinner">Loading...</div>
+      </div>
+      <div class="error-message" *ngIf="error && !loading">
+        {{ error }}
+      </div>
+      <div *ngIf="!loading && !error">
+        <div class="no-data" *ngIf="filteredApplications.length === 0">
+          No rejected applications found matching the criteria.
+        </div>
+        <table class="applications-table" *ngIf="filteredApplications.length > 0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Contract Code</th>
+              <th>Location</th>
+              <th>License ID</th>
+              <th>Zone</th>
+              <th>Division</th>
+              <th>Application Date</th>
+              <th>Medical Valid Upto</th>
+              <th>Photo</th>
+              <th>Police Certificate</th>
+              <th>Aadhar Card</th>
+              <th>Signature</th>
+              <th>Money Receipt</th>
+              <th>Last Paid</th>
+              <th>DD/MR</th>
+              <th>annexure_one</th>
+              <th>annexure_two</th>
+              <th>annexure_three</th>
+              <th>Applicant Remarks</th>
+              <th>
+                <pre>
+        CCI rejected remarks 
+        &&
+        Office rejected remarks 
+           </pre>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let card of filteredApplications">
+              <td>{{ card.first_name }} {{ card.middle_initial }} {{ card.last_name }}</td>
+              <td>{{ card.contract_code }}</td>
+              <td>{{ card.location }}</td>
+              <td>{{ card.licensee_id }}</td>
+              <td>{{ card.zone }}</td>
+              <td>{{ card.division }}</td>
+              <td>{{ formatDate(card.date_of_application) }}</td>
+              <td>{{ formatDate(card.medical_valid_upto) }}</td>
+              <!-- Document links -->
+              <td><a *ngIf="hasFile(card.photo)" (click)="viewImage(card.photo)" class="file-link">view</a></td>
+              <td><a *ngIf="hasFile(card.police_cert_file)" (click)="viewImage(card.police_cert_file)"
+                  class="file-link">view</a></td>
+              <td><a *ngIf="hasFile(card.aadhar_card_file)" (click)="viewImage(card.aadhar_card_file)"
+                  class="file-link">view</a></td>
+              <td><a *ngIf="hasFile(card.vendor_signature_file)" (click)="viewImage(card.vendor_signature_file)"
+                  class="file-link">view</a></td>
+              <td><a *ngIf="hasFile(card.money_receipt_file)" (click)="viewImage(card.money_receipt_file)"
+                  class="file-link">view</a></td>
+              <td><a *ngIf="hasFile(card.last_paid_file)" (click)="viewImage(card.last_paid_file)"
+                  class="file-link">view</a></td>
+              <td><a *ngIf="hasFile(card.dd_mr_file)" (click)="viewImage(card.dd_mr_file)" class="file-link">view</a>
+              </td>
+
+               <td><a *ngIf="hasFile(card.medical_cert_file)" (click)="viewImage(card.medical_cert_file)"
+                  class="file-link">view</a></td>
+              <!-- Annexure Two -->
+              <td>
+                <a *ngIf="hasFile(card.annexure_two_file)" (click)="viewImage(card.annexure_two_file)"
+                  class="file-link">
+                  view
+                </a>
+              </td>
+
+              <!-- Annexure Three -->
+              <td>
+                <a *ngIf="hasFile(card.annexure_three_file)" (click)="viewImage(card.annexure_three_file)"
+                  class="file-link">
+                  view
+                </a>
+              </td>
+
+
+
+              <td>{{ card.licensee_remarks || 'Not specified' }}</td>
+              <td>{{ card.verified_approveds?.[0]?.cci_reject_remarks || 'N/A' }} &&
+                {{card.verified_approveds?.[0]?.officer_reject_remarks || 'N/A'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Image Modal -->
+
+      <div class="image-modal" *ngIf="showImageModal">
+        <div class="modal-content image-modal-content">
+          <button class="btn btn-danger     close-button image-close-button" (click)="closeImageModal()">X</button>
+          <div class="image-container">
+            <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected" class="img-fluid rounded shadow">
+          </div>
+        </div>
+      </div>
+
+    </div>

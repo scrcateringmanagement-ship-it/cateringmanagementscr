@@ -1,0 +1,77 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">User Type Management</h5>
+            <button class="btn btn-light" (click)="openDialog()">
+                <i class="bi bi-plus-circle me-2"></i>Add User Type
+            </button>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search user types..." [(ngModel)]="searchText"
+                        (keyup)="filterUsertypes()">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>User Type Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let usertype of filteredUsertypeList">
+                            <td>{{usertype.usertypename}}</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary" (click)="editUsertype(usertype)"
+                                        title="Edit User Type">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" (click)="deleteUsertype(usertype)"
+                                        title="Delete User Type">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="filteredUsertypeList.length === 0">
+                            <td colspan="2" class="text-center py-3">No user types found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #dialogTemplate>
+    <div class="modal-header bg-light">
+        <h5 class="modal-title">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="usertypeForm" class="row g-3">
+            <div class="col-12">
+                <label class="form-label">User Type Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="usertypename" placeholder="Enter user type name">
+                <div class="invalid-feedback" *ngIf="usertypeForm.get('usertypename')?.invalid && usertypeForm.get('usertypename')?.touched">
+                    User type name is required
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="usertypeForm.invalid" (click)="onSubmit()">
+            Save
+        </button>
+    </div>
+</ng-template>

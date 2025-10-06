@@ -1,0 +1,119 @@
+.table-responsive {
+  margin-top: 20px;
+}
+
+.btn-action {
+  margin-right: 8px;
+}
+
+#validityCalendar {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+
+
+
+.card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.badge {
+  font-size: 0.85em;
+  padding: 0.5em 0.75em;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.pdf-viewer {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.list-group-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.list-group-item a:hover {
+  text-decoration: underline;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.calendar-wrapper {
+  display: flex;
+  justify-content: flex-start; /* Align to left */
+  align-items: center;         /* Center vertically (optional) */
+  transform: scale(1.2);
+  transform-origin: left;
+  width: 50%;
+  height: 85%;
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin-top: 20px;
+}
+
+.full-width-modal {
+  max-width: 95vw;
+}
+
+.two-column-modal {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Set fixed height and individual scrollbars */
+.modal-left-column, .modal-right-column {
+  max-height: 75vh;     /* height of modal body */
+  overflow: hidden;     /* hide default scroll for column container */
+  padding-right: 0;     /* remove double scrollbars */
+}
+
+/* Each inner scroll area gets its own scrollbar */
+.left-scroll, .right-scroll {
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+/* Optional: style scrollbars */
+.left-scroll::-webkit-scrollbar,
+.right-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.left-scroll::-webkit-scrollbar-thumb,
+.right-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.image-container {
+  overflow: auto;
+  max-height: 400px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.pdf-view {
+  height: 400px;
+  display: block;
+}

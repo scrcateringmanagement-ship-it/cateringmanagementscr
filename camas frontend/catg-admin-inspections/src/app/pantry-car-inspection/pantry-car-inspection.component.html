@@ -1,0 +1,115 @@
+<div class="container py-4">
+    <mat-card class="p-4 card-shadow">
+        <!-- Header with Title + ADD Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Pantry Car Inspections</h2>
+            <button mat-raised-button color="primary" (click)="goToRegistration()">
+                <mat-icon class="me-1">add</mat-icon> ADD
+            </button>
+        </div>
+
+        <!-- Filter Row -->
+        <div class="row g-3 align-items-end mb-3">
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>From Date</mat-label>
+                    <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" (dateChange)="updateFromDate()">
+                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>To Date</mat-label>
+                    <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" (dateChange)="updateToDate()">
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Search Train No.</mat-label>
+                    <input matInput [(ngModel)]="search_train_no" (input)="apply_filter()">
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+                <button mat-raised-button color="primary" class="w-100" (click)="loadInspectionsByDate()">
+                    <mat-icon>filter_alt</mat-icon> Filter
+                </button>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mb-3 d-flex gap-2">
+            <button mat-stroked-button color="accent" (click)="printTable()">
+                <mat-icon>print</mat-icon> Print
+            </button>
+            <button mat-stroked-button color="warn" (click)="exportToExcel()">
+                <mat-icon>file_download</mat-icon> Export Excel
+            </button>
+        </div>
+
+        <!-- Inspection Table -->
+        <div id="print-section" class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Train Number</th>
+                        <th>Date of Inspection</th>
+                        <th>Inspecting Officer</th>
+                        <th>From - To</th>
+                        <th>FSSAI License</th>
+                        <th>Staff Details</th>
+                        <th>Fire Safety</th>
+                        <th>Hygiene</th>
+                        <th>Quality</th>
+                        <th>Quantity</th>
+                        <th>Fine Imposed (₹)</th>
+                        <th>Remarks</th>
+                        <th>PCM Name</th>
+                        <th>PCM Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let insp of pantryList; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ insp.pcm_details?.train_no }}</td>
+                        <td>{{ insp.date_of_inspe | date:'dd-MM-yy' }}</td>
+                        <td>{{ insp.inspe_officer_official_name }}</td>
+                        <td>{{ insp.from_to }}</td>
+                        <td>{{ insp.fassai.fassai_id }} - {{ insp.fassai.fassai_id_validity }}</td>
+                        <td>{{ insp.staff.staff_id }} - {{ insp.staff.staff_id_validity }}</td>
+                        <td>
+                            {{ insp.availability_of_fire_safety.equipment }} -
+                            {{ insp.availability_of_fire_safety.equipment_validity }}
+                        </td>
+                        <td>{{ insp.availability_of_fire_safety.Replacement_standard_heating_coils_with_higher }}</td>
+                        <td>{{
+                            insp.availability_of_fire_safety.use_of_loose_equipment_with_makeshift_wiring_tapping_electrical_connection
+                            }}</td>
+                        <td>{{ insp.availability_of_fire_safety.blocking_of_fire_safety_related_equipment }}</td>
+                        <td>{{ insp.availability_of_fire_safety.action_taken }}</td>
+                        <td>{{ insp.availability_of_fire_safety.any_other_remarks }}</td>
+                        <td>{{ insp.pcm_details?.pcm_name }}</td>
+                        <td>{{ insp.pcm_details?.pcm_number }}</td>
+                        <td>
+                            <button mat-icon-button color="primary" (click)="editPantryCar(insp.id)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="pantryList.length === 0">
+                        <td colspan="16" class="text-center">
+                            No pantry inspections found for selected criteria.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card>
+</div>

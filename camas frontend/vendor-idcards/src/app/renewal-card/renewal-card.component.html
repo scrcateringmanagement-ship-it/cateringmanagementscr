@@ -1,0 +1,555 @@
+<button class="btn btn-danger" onclick="history.back()"><- Back</button>
+<div class="rejected-container">
+  <h2>Renewal ID Cards</h2>
+
+  <!-- Loading indicator -->
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner">Loading...</div>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-message" *ngIf="error && !loading">
+    {{ error }}
+  </div>
+
+  <!-- Renewal applications table -->
+  <div *ngIf="!loading && !error">
+    <div class="no-data" *ngIf="renewalCards.length === 0">
+      No renewal applications found matching the criteria.
+    </div>
+    <table class="applications-table" *ngIf="renewalCards.length > 0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contract Code</th>
+          <th>Location</th>
+          <th>License ID</th>
+          <th>Zone</th>
+          <th>Division</th>
+          <th>Application Date</th>
+          <th>Medical Valid Upto</th>
+          <th>Photo</th>
+          <th>Police Certificate</th>
+          <th>Aadhar Card</th>
+          <th>Signature</th>
+          <th>Money Receipt</th>
+          <th>Last Paid</th>
+          <th>DD/MR</th>
+          <th>annexure_one</th>
+          <th>annexure_two</th>
+          <th>annexure_three</th>
+          <!-- <th>Applicant Remarks</th>
+          <th>
+            <pre>
+CCI rejected remarks 
+&&
+Office rejected remarks 
+           </pre>
+          </th> -->
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let card of renewalCards">
+          <td>{{ card.first_name }} {{ card.middle_initial }} {{ card.last_name }}</td>
+          <td>{{ card.contract_code }}</td>
+          <td>{{ card.location }}</td>
+          <td>{{ card.licensee_id }}</td>
+          <td>{{ card.zone }}</td>
+          <td>{{ card.division }}</td>
+          <td>{{ formatDate(card.date_of_application) }}</td>
+          <td>{{ formatDate(card.medical_valid_upto) }}</td>
+          <!-- Document links -->
+          <td><a *ngIf="hasFile(card.photo)" (click)="viewImage(card.photo)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.police_cert_file)" (click)="viewImage(card.police_cert_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.aadhar_card_file)" (click)="viewImage(card.aadhar_card_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.vendor_signature_file)" (click)="viewImage(card.vendor_signature_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.money_receipt_file)" (click)="viewImage(card.money_receipt_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.last_paid_file)" (click)="viewImage(card.last_paid_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.dd_mr_file)" (click)="viewImage(card.dd_mr_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.medical_cert_file)" (click)="viewImage(card.medical_cert_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.annexure_two_file)" (click)="viewImage(card.annexure_two_file)" class="file-link">view</a></td>
+          <td><a *ngIf="hasFile(card.annexure_three_file)" (click)="viewImage(card.annexure_three_file)" class="file-link">view</a></td>
+
+          <!-- <td>{{ card.licensee_remarks || 'Not specified' }}</td>
+          <td>{{ card.verified_approveds?.[0]?.cci_reject_remarks || 'N/A' }} &&
+            {{card.verified_approveds?.[0]?.officer_reject_remarks || 'N/A'}}</td> -->
+          <td>
+            <button class="btn-edit" (click)="openEditModal(card)">Renew</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="edit-modal" *ngIf="showEditModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Update Renewal Application</h3>
+        <button class="close-button" (click)="closeEditModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateForm" (ngSubmit)="submitUpdate()">
+
+          <!-- Basic Information -->
+          <div class="form-section">
+            <h4>Basic Information</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" formControlName="first_name">
+                <div *ngIf="updateForm.get('first_name')?.invalid && updateForm.get('first_name')?.touched" class="error-message">First name is required.</div>
+              </div>
+              <div class="form-group">
+                <label>Middle Initial</label>
+                <input type="text" formControlName="middle_initial">
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" formControlName="last_name">
+                <div *ngIf="updateForm.get('last_name')?.invalid && updateForm.get('last_name')?.touched" class="error-message">Last name is required.</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" formControlName="email">
+                <div *ngIf="updateForm.get('email')?.invalid && updateForm.get('email')?.touched" class="error-message">Invalid email format.</div>
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" formControlName="phone_number">
+              </div>
+              <div class="form-group">
+                <label>blood_group</label>
+                <input type="text" formControlName="blood_group">
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Details -->
+          <div class="form-section">
+            <h4>Personal Details</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" formControlName="dob">
+              </div>
+              <div class="form-group">
+                <label>Gender</label>
+                <select formControlName="gender" [attr.readonly]="selectReadOnly ? '' : null" (click)="activateSelect()" class="select-control">
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Civil Status</label>
+                <select formControlName="civil_status" [attr.readonly]="selectReadOnly ? '' : null" (click)="activateSelect()" class="select-control">
+                  <option value="">Select Status</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Divorced">Divorced</option>
+                  <option value="Widowed">Widowed</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group form-group-full">
+                <label>Address</label>
+                <textarea formControlName="address" rows="2"></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ID Card Specific Information -->
+          <div class="form-section">
+            <h4>ID Card Information</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Name (as on card)</label>
+                <input type="text" formControlName="name">
+              </div>
+              <div class="form-group">
+                <label>Designation</label>
+                <input type="text" formControlName="designation" [value]="designation" readonly>
+              </div>
+              <div class="form-group">
+                <label>Type of Card</label>
+                <select formControlName="type_of_card" [attr.readonly]="selectReadOnly ? '' : null" (click)="activateSelect()" class="select-control">
+                  <option value="">Select Type</option>
+                  <option value="new">New</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contract Information -->
+          <div class="form-section">
+            <h4>Contract Information</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Contract Code</label>
+                <input type="text" formControlName="contract_code" readonly>
+              </div>
+              <div class="form-group">
+                <label>Licensee ID</label>
+                <input type="text" formControlName="licensee_id" readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>License Name</label>
+                <input type="text" formControlName="license_name" readonly>
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" formControlName="location" readonly>
+              </div>
+              <div class="form-group">
+                <label>Station</label>
+                <input type="text" formControlName="station" readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Division</label>
+                <input type="text" formControlName="division" readonly>
+              </div>
+              <div class="form-group">
+                <label>Zone</label>
+                <input type="text" formControlName="zone" readonly>
+              </div>
+              <div class="form-group">
+                <label>Date of Application</label>
+                <input type="date" formControlName="date_of_application" readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Contract Start Date</label>
+                <input type="date" formControlName="contract_details_start_date" readonly>
+              </div>
+              <div class="form-group">
+                <label>Contract End Date</label>
+                <input type="date" formControlName="contract_details_end_date" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verification & Medical Details -->
+          <div class="form-section">
+            <h4>Verification & Medical Details</h4>
+            <h5>Police Verification</h5>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Police Certificate Number</label>
+                <input type="text" formControlName="police_cert_no">
+              </div>
+              <div class="form-group">
+                <label>Police Certificate Date</label>
+                <input type="date" formControlName="police_cert_date">
+              </div>
+              <div class="form-group">
+                <label>Police Station</label>
+                <input type="text" formControlName="police_station">
+              </div>
+            </div>
+            <h5>Medical Examination</h5>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Medical By</label>
+                <input type="text" formControlName="medical_by">
+              </div>
+              <div class="form-group">
+                <label>Medical Date</label>
+                <input type="date" formControlName="medical_date">
+              </div>
+              <div class="form-group">
+                <label>Medical Valid Upto</label>
+                <input type="date" formControlName="medical_valid_upto">
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment & Other Details -->
+          <div class="form-section">
+            <h4>Payment & Other Details</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Last Paid Date</label>
+                <input type="date" formControlName="last_paid_date">
+              </div>
+              <div class="form-group">
+                <label>Position</label>
+                <select formControlName="position" (change)="onPositionChange($event)" class="select-control">
+                  <option value="">Select Position</option>
+                  <option *ngFor="let pos of positions" [value]="pos.vendorPositionName">
+                    {{ pos.vendorPositionName }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Year</label>
+                <input type="text" formControlName="year">
+              </div>
+            </div>
+          </div>
+
+          <!-- Rejection Remarks -->
+          <div class="form-section">
+            <h4>Remarks</h4>
+            <div class="form-row">
+              <div class="form-group form-group-full">
+                <label>Licensee Remarks (Renewal Reason)</label>
+                <textarea formControlName="licensee_remarks" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Uploads with improved file management UI -->
+          <div class="form-section">
+            <h4>Document Uploads</h4>
+
+            <!-- Photo -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>Photo (JPG only, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.photo) && !replacePhoto">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.photo!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('photo', selectedCard?.photo!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replacePhoto || !hasFile(selectedCard?.photo)">
+                  <input type="file" (change)="UploadFile($event , 'photo')" accept=".jpg,.jpeg" class="file-input">
+                  <div *ngIf="replacePhoto" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('photo')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingPhoto" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('photo')">{{ getFileErrorMessage('photo') }}</span>
+              </div>
+            </div>
+
+            <!-- Police Certificate and Medical Certificate -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>Police Certificate (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.police_cert_file) && !replacePoliceCert">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.police_cert_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('police_cert_file', selectedCard?.police_cert_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replacePoliceCert || !hasFile(selectedCard?.police_cert_file)">
+                  <input type="file" (change)="UploadFile($event ,'policeCertFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replacePoliceCert" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('policeCertFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingPoliceCert" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('policeCertFile')">{{ getFileErrorMessage('policeCertFile') }}</span>
+              </div>
+
+              <div class="form-group file-management-group">
+                <label>annexure one(PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.medical_cert_file) && !replaceMedicalCert">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.medical_cert_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('medical_cert_file', selectedCard?.medical_cert_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceMedicalCert || !hasFile(selectedCard?.medical_cert_file)">
+                  <input type="file" (change)="UploadFile($event ,'medicalCertFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceMedicalCert" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('medicalCertFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingMedicalCert" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('medicalCertFile')">{{ getFileErrorMessage('medicalCertFile') }}</span>
+              </div>
+            </div>
+
+            <!-- Aadhar Card and Vendor Signature -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>Aadhar Card (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.aadhar_card_file) && !replaceAadharCard">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.aadhar_card_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('aadhar_card_file', selectedCard?.aadhar_card_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceAadharCard || !hasFile(selectedCard?.aadhar_card_file)">
+                  <input type="file" (change)="UploadFile($event , 'aadharCardFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceAadharCard" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('aadharCardFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingAadharCard" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('aadharCardFile')">{{ getFileErrorMessage('aadharCardFile') }}</span>
+              </div>
+
+              <div class="form-group file-management-group">
+                <label>Signature (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.vendor_signature_file) && !replaceVendorSignature">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.vendor_signature_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('vendor_signature_file', selectedCard?.vendor_signature_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceVendorSignature || !hasFile(selectedCard?.vendor_signature_file)">
+                  <input type="file" (change)="UploadFile($event , 'vendorSignatureFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceVendorSignature" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('vendorSignatureFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingVendorSignature" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('vendorSignatureFile')">{{ getFileErrorMessage('vendorSignatureFile') }}</span>
+              </div>
+            </div>
+
+            <!-- Money Receipt and Last Paid -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>Money Receipt (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.money_receipt_file) && !replaceMoneyReceipt">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.money_receipt_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('money_receipt_file', selectedCard?.money_receipt_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceMoneyReceipt || !hasFile(selectedCard?.money_receipt_file)">
+                  <input type="file" (change)="UploadFile($event , 'moneyReceiptFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceMoneyReceipt" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('moneyReceiptFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingMoneyReceipt" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('moneyReceiptFile')">{{ getFileErrorMessage('moneyReceiptFile') }}</span>
+              </div>
+
+              <div class="form-group file-management-group">
+                <label>Last Paid Receipt (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.last_paid_file) && !replaceLastPaid">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.last_paid_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('last_paid_file', selectedCard?.last_paid_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceLastPaid || !hasFile(selectedCard?.last_paid_file)">
+                  <input type="file" (change)="UploadFile($event , 'lastPaidFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceLastPaid" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('lastPaidFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingLastPaid" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('lastPaidFile')">{{ getFileErrorMessage('lastPaidFile') }}</span>
+              </div>
+            </div>
+
+            <!-- DD/MR File -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>DD/MR File (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.dd_mr_file) && !replaceDdMr">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.dd_mr_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('dd_mr_file', selectedCard?.dd_mr_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceDdMr || !hasFile(selectedCard?.dd_mr_file)">
+                  <input type="file" (change)="UploadFile($event , 'ddMrFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceDdMr" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('ddMrFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingDdMr" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('ddMrFile')">{{ getFileErrorMessage('ddMrFile') }}</span>
+              </div>
+            </div>
+
+            <!-- Annexure Two File -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>Annexure Two (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.annexure_two_file) && !replaceAnnexureTwo">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.annexure_two_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('annexure_two_file', selectedCard?.annexure_two_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceAnnexureTwo || !hasFile(selectedCard?.annexure_two_file)">
+                  <input type="file" (change)="UploadFile($event , 'annexureTwoFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceAnnexureTwo" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('annexureTwoFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingAnnexureTwo" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('annexureTwoFile')">{{ getFileErrorMessage('annexureTwoFile') }}</span>
+              </div>
+            </div>
+
+            <!-- Annexure Three File -->
+            <div class="form-row file-management-row">
+              <div class="form-group file-management-group">
+                <label>Annexure Three (PDF/JPG/PNG, max 1MB)</label>
+                <div class="file-actions" *ngIf="hasFile(selectedCard?.annexure_three_file) && !replaceAnnexureThree">
+                  <button type="button" class="btn-file-action btn-view" (click)="viewImage(selectedCard?.annexure_three_file!)">View</button>
+                  <button type="button" class="btn-file-action btn-remove" (click)="confirmDeleteFile('annexure_three_file', selectedCard?.annexure_three_file!)">Remove</button>
+                </div>
+                <div class="file-upload-container" *ngIf="replaceAnnexureThree || !hasFile(selectedCard?.annexure_three_file)">
+                  <input type="file" (change)="UploadFile($event , 'annexureThreeFile')" accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+                  <div *ngIf="replaceAnnexureThree" class="cancel-replace">
+                    <button type="button" class="btn-cancel-replace" (click)="toggleReplaceFile('annexureThreeFile')">Cancel</button>
+                  </div>
+                </div>
+                <div *ngIf="loadingAnnexureThree" class="upload-loader">Uploading...</div>
+                <span class="error-message" *ngIf="getFileErrorMessage('annexureThreeFile')">{{ getFileErrorMessage('annexureThreeFile') }}</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Aadhar Number</label>
+                <input type="text" formControlName="aadhar_number" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12);" maxlength="12" placeholder="12-digit Aadhar" name="aadharNumber" inputmode="numeric" class="form-control" />
+                <span class="error-message" *ngIf="updateForm.get('aadhar_number')?.touched && updateForm.get('aadhar_number')?.invalid">
+                  <ng-container *ngIf="updateForm.get('aadhar_number')?.errors?.['required']">Aadhar number is required.</ng-container>
+                  <ng-container *ngIf="updateForm.get('aadhar_number')?.errors?.['pattern']">Aadhar number must be exactly 12 digits.</ng-container>
+                </span>
+                <span class="error-message">* Enter Aadhar number compulsory</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" (click)="closeEditModal()">Cancel</button>
+            <button type="submit" class="btn-submit" [disabled]="updateForm.invalid || submitting">
+              <span *ngIf="!submitting">Submit Renewal</span>
+              <span *ngIf="submitting">Updating...</span>
+            </button>
+          </div>
+          <div *ngIf="error" class="error-message form-error-message">
+            {{ error }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="image-modal" *ngIf="showImageModal">
+    <div class="modal-content image-modal-content">
+      <button class="close-button image-close-button" (click)="closeImageModal()">×</button>
+      <div class="image-container">
+        <iframe *ngIf="selectedImage && selectedImage.includes('drive.google.com') && !selectedImage.includes('/preview') && !selectedImage.includes('export=view')" [src]="(selectedImage.replace('/view', '/preview')) | safeUrl" frameborder="0" class="preview-frame"></iframe>
+        <img *ngIf="selectedImage && (!selectedImage.includes('drive.google.com') || selectedImage.includes('/preview') || selectedImage.includes('export=view'))" [src]="selectedImage | safeUrl" alt="Document Preview" class="modal-image">
+        <div *ngIf="!selectedImage" class="no-image-preview">No image to display or URL is invalid.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Delete Confirmation Modal -->
+  <div class="confirmation-modal" *ngIf="confirmDeleteModalOpen">
+    <div class="modal-content confirmation-modal-content">
+      <div class="modal-header">
+        <h4>Confirm Delete</h4>
+        <button class="close-button" (click)="cancelDeleteFile()">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this {{ getFieldDisplayName(fileFieldToDelete) }}?</p>
+        <p class="warning-text">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="cancelDeleteFile()">Cancel</button>
+        <button class="btn-delete" (click)="deleteFile()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

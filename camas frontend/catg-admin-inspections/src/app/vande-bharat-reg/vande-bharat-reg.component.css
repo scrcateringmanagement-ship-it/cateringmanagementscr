@@ -1,0 +1,255 @@
+/* VB Inspection Form Styles */
+
+/* Form Container */
+form {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h3 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+h4 {
+  color: #34495e;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  border-left: 4px solid #3498db;
+  padding-left: 15px;
+}
+
+/* Row spacing */
+.row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.col-md-4,
+.col-md-6 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Labels */
+label {
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Form Controls */
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-control:hover {
+  border-color: #bdc3c7;
+}
+
+/* Textarea specific */
+textarea.form-control {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Invalid state */
+.form-control.is-invalid {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.invalid-feedback {
+  display: block;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+/* Submit Button */
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+}
+.cu-m{
+     display: flex;
+    justify-content: center;
+    
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Margin utilities */
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .col-md-4,
+  .col-md-6 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  form {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  h3 {
+    font-size: 24px;
+  }
+  
+  h4 {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 769px) {
+  .col-md-4 {
+    width: 33.333%;
+    float: left;
+  }
+  
+  .col-md-6 {
+    width: 50%;
+    float: left;
+  }
+}
+
+/* Clearfix for floating columns */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Focus states for accessibility */
+.form-control:focus,
+.btn:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Placeholder styling */
+.form-control::placeholder {
+  color: #95a5a6;
+  opacity: 1;
+}
+
+/* Additional spacing for better visual hierarchy */
+.mb-3:last-child {
+  margin-bottom: 0;
+}
+h3 {
+  text-transform: uppercase;
+}
+
+
+.main-head {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.small-font {
+  font-size: 0.6rem; /* smaller than normal */
+}
+
+.small-font label {
+  font-size: 0.6rem;
+}
+
+.small-font input,
+.small-font textarea,
+.small-font button {
+  font-size: 0.6rem;
+}
+.small-font placeholder {
+    font-size: 0.3rem;
+
+}
+/* Decrease font size for all placeholders */
+input::placeholder,
+textarea::placeholder {
+    font-size: 0.6rem; /* adjust as needed */
+}
+
+/* For cross-browser support */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    font-size: 0.6rem;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    font-size: 0.6rem;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    font-size: 0.6rem;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    font-size: 0.6rem;
+}
+
+
+
+
+

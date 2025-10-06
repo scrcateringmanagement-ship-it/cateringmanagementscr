@@ -1,0 +1,177 @@
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Inspection Registration</h2>
+    <form [formGroup]="inspectionForm" (ngSubmit)="onSubmit()" #inspectionFormDir="ngForm">
+
+      <!-- Unit Number (ng-select dropdown with search) -->
+      <div class="form-group">
+        <label>Unit Number<span class="required-asterisk">*</span></label>
+        <ng-select [items]="unitNumbers" bindLabel="label" bindValue="value" formControlName="unitNumber"
+          [searchable]="true" placeholder="Select unit"></ng-select>
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('unitNumber')?.invalid && inspectionForm.get('unitNumber')?.touched">
+          Unit number is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date of Inspection<span class="required-asterisk">*</span></label>
+        <input type="date" class="form-control" formControlName="inspectionDate" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('inspectionDate')?.invalid && inspectionForm.get('inspectionDate')?.touched">
+          Inspection date is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mode of Inspection<span class="required-asterisk">*</span></label>
+        <ng-select [items]="modesOfInspection" bindLabel="label" bindValue="value" formControlName="inspectionMode"
+          [searchable]="true" placeholder="Select mode"></ng-select>
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('inspectionMode')?.invalid && inspectionForm.get('inspectionMode')?.touched">
+          Mode of inspection is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Location Type<span class="required-asterisk">*</span></label>
+        <div class="btn-group location-type-group" role="group">
+          <input type="radio" class="btn-check" formControlName="locationType" value="train" id="trainRadio"
+            (change)="onLocationTypeChange()">
+          <label class="btn btn-outline-primary" for="trainRadio">Train</label>
+          <input type="radio" class="btn-check" formControlName="locationType" value="station" id="stationRadio"
+            (change)="onLocationTypeChange()">
+          <label class="btn btn-outline-primary" for="stationRadio">Station</label>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'train'">
+        <label>Train Number<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="trainNumber" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('trainNumber')?.invalid && inspectionForm.get('trainNumber')?.touched">
+          Train number is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'train'">
+        <label>Name of Licensee<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="licenseeName" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('licenseeName')?.invalid && inspectionForm.get('licenseeName')?.touched">
+          Licensee name is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'train'">
+        <label>Licensee Number<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="licenseeNumber" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('licenseeNumber')?.invalid && inspectionForm.get('licenseeNumber')?.touched">
+          Licensee number is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'train'">
+        <label>Div. of Licensee Accredited<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="licenseeDivision" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('licenseeDivision')?.invalid && inspectionForm.get('licenseeDivision')?.touched">
+          Division is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'station'">
+        <label>Station<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="station" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('station')?.invalid && inspectionForm.get('station')?.touched">
+          Station is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'station'">
+        <label>Section<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="section" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('section')?.invalid && inspectionForm.get('section')?.touched">
+          Section is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'station'">
+        <label>Vendor Name<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="vendorName" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('vendorName')?.invalid && inspectionForm.get('vendorName')?.touched">
+          Vendor name is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'station'">
+        <label>Vendor Number<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="vendorNumber" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('vendorNumber')?.invalid && inspectionForm.get('vendorNumber')?.touched">
+          Vendor number is required
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="inspectionForm.get('locationType')?.value === 'station'">
+        <label>Vendor Aadhar<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" formControlName="vendorAadhar" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('vendorAadhar')?.invalid && inspectionForm.get('vendorAadhar')?.touched">
+          Vendor Aadhar is required
+        </div>
+      </div>
+
+
+
+      <div class="form-group">
+        <label>Category of Deficiency<span class="required-asterisk">*</span></label>
+        <ng-select [items]="categoriesOfDeficiency" bindLabel="label" bindValue="value"
+          formControlName="deficiencyCategory" [searchable]="true" placeholder="Select category"></ng-select>
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('deficiencyCategory')?.invalid && inspectionForm.get('deficiencyCategory')?.touched">
+          Deficiency category is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Details of Deficiencies Noticed<span class="required-asterisk">*</span></label>
+        <textarea class="form-control" formControlName="deficiencies"></textarea>
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('deficiencies')?.invalid && inspectionForm.get('deficiencies')?.touched">
+          Deficiencies are required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Action Taken<span class="required-asterisk">*</span></label>
+        <ng-select [items]="actionsTaken" bindLabel="label" bindValue="value" formControlName="actionTaken"
+          [searchable]="true" placeholder="Select action"></ng-select>
+      </div>
+
+      <div  class="form-group">
+        <label>Fine Imposed (Rs.)<span class="required-asterisk">*</span></label>
+        <input type="number" class="form-control" formControlName="fineImposed" />
+        <div class="invalid-feedback"
+          *ngIf="inspectionForm.get('fineImposed')?.invalid && inspectionForm.get('fineImposed')?.touched">
+          Fine imposed is required when action is 'Fined'
+        </div>
+      </div>
+
+      <div  class="form-group">
+        <label>Action Taken Remarks<span class="required-asterisk">*</span></label>
+        <textarea class="form-control" formControlName="actionRemarks"></textarea>
+      </div>
+
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary">
+          <span *ngIf="inspectionForm.pending">Submitting...</span>
+          <span *ngIf="!inspectionForm.pending">Submit</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

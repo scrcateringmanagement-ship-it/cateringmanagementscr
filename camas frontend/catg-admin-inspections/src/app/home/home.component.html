@@ -1,0 +1,230 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid d-flex justify-content-between">
+    <!-- Left: Round Logo and Brand -->
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img src="3.png" alt="Logo" class="rounded-circle" width="40" height="40" />
+      <span class="ms-2 text-white">Catering Management System</span>
+    </a>
+
+    <!-- Toggle for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Right Side: Menu -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+      <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+        <!-- Inspection Dropdown -->
+        <li class="nav-item dropdown me-3" *ngIf="userRole === 'Approver' && userType == 'Approver'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Inspections Approver
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionapproverreg')">Registration</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionreportOfficeUser')">Inspection Reports</a>
+            </li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionfine')">Fine Records Update Payment</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionlistapprover')">Inspections Forwarded</a>
+            <li><a class="dropdown-item" (click)="loadComponent('PantryCarInspectionComponent')">Pantry Cars
+                Inspection</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('bharat_insp')">vande bharat Inspection</a></li>
+
+
+
+          </ul>
+        </li>
+        <li class="nav-item dropdown me-3" *ngIf="userRole === 'Officeuser'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Inspections Office User
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionofficereg')">Registration</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionfine')">Fine Records Update Payment</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionreportOfficeUser')">Inspection Reports</a>
+            </li>
+            <li><a class="dropdown-item" (click)="loadComponent('forwardinginspections')">Inspections Forwarded</a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="loadComponent('PantryCarInspectionComponent')">
+                Pantry Cars Inspection
+              </a>
+            </li>
+            <!-- <li><a class="dropdown-item" (click)="loadComponent('bharat_reg')">vande bharat Registration</a></li> -->
+            <li><a class="dropdown-item" (click)="loadComponent('bharat_insp')">vande bharat Inspection</a></li>
+
+
+          </ul>
+        </li>
+        <li class="nav-item dropdown me-3" *ngIf="userRole === 'CCI'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Inspections CCI
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionccireg')">Registration</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionlistcci')">Inspections List</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionfine')">Inspection Fine Records</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('inspectionreport')">Inspection Reports</a></li>
+            <li>
+              <a class="dropdown-item" (click)="loadComponent('PantryCarInspectionComponent')">
+                Pantry Cars Inspection
+              </a>
+            </li>
+            <li><a class="dropdown-item" (click)="loadComponent('bharat_insp')">vande bharat Inspection</a></li>
+          </ul>
+        </li>
+
+        <!-- Id Cards Approver Dropdown (Shown only if userRole is Approver and desig is not Sr.DCM) -->
+        <li class="nav-item dropdown me-3"
+          *ngIf="userRole === 'Approver' && (userType == 'Approver' || userType == 'Issuer')">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Id Cards Approver
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('approvergetidcards')">ID Cards Inbox</a></li>
+          </ul>
+        </li>
+
+        <!-- Id Cards Office User Dropdown -->
+        <li class="nav-item dropdown me-3" *ngIf="userRole === 'Officeuser'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Id Cards Office User
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('officeusergetidcards')">ID Cards Inbox</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('officeusergetidcardslist')">ID Cards List</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('officeusercancelledidcards')">Cancelled ID Cards</a>
+            </li>
+
+          </ul>
+        </li>
+
+        <!-- Id Cards CCI Dropdown -->
+        <li class="nav-item dropdown me-3" *ngIf="userRole === 'CCI'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Id Cards CCI
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('ccigetidcards')">ID Cards Inbox</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('cciidcardsapprove')">ID Cards Approve</a></li>
+          </ul>
+
+        </li>
+
+        <!-- Settings -->
+           <li  *ngIf="(userRole === 'Approver' && userType == 'Masters')"><a class="dropdown-item" (click)="loadComponent('catgsettings')">Settings </a></li>
+
+        <!-- Reports Dropdown -->
+        <li class="nav-item dropdown me-3">
+
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Reports
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li
+              *ngIf="(userRole === 'Officeuser') || (userRole === 'Approver' && (userType == 'Approver' || userType == 'Issuer'))">
+              <a class="dropdown-item" (click)="loadComponent('ContractDetails')">Contract Details</a>
+            </li>
+            <li><a class="dropdown-item" (click)="loadComponent('UnitWiseIdCards')">Unit Wise Id Cards</a></li>
+            <li  *ngIf="(userRole === 'Approver' && userType == 'Masters')"><a class="dropdown-item" (click)="loadComponent('CompletedIdcards')">Completed Idcards</a></li>
+          </ul>
+        </li>
+
+        <!-- Contract Master Dropdown -->
+        <li class="nav-item dropdown me-3"
+          *ngIf="(userRole === 'Officeuser') || (userRole === 'Approver' && userType == 'Approver' && userType == 'Approver')">
+
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Contract Master
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('conasset')">Contract Assets</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('licdetails')">Licensee Details</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('contractdetails')">Contracts Awarded</a></li>
+          </ul>
+        </li>
+
+        <!-- Dropdown Master Dropdown -->
+        <li class="nav-item dropdown me-3" *ngIf="userType === 'Masters'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Dropdown Master
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('catdetails')">Category</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('rlyinfo')">Rly Info</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('modepay')">Mode Of Payment</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('modeop')">Mode of Operation</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('status')">Status</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('usertype')">User Type</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('roletype')">Role Type</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('users')">User Info</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('locationtype')">Location Type</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('vendorposition')">Vendor Position</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('deficiency')">Deficiency</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('actiontaken')">Action Taken</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('modeofinspection')">Mode of Inspection</a></li>
+          </ul>
+        </li>
+
+        <!-- Dropdown Master Dropdown -->
+        <li class="nav-item dropdown me-3" *ngIf="userType === 'Approver'">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Dropdown Master
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadComponent('rlyinfo')">Rly Info</a></li>
+            <li><a class="dropdown-item" (click)="loadComponent('users')">User Info</a></li>
+          </ul>
+        </li>
+
+        <li><a class="dropdown-item" (click)="loadComponent('changepassword')">Change Password </a></li>
+
+        <!-- Account Icon with Dropdown -->
+        <li class="nav-item dropdown me-2">
+          <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userProfileDropdown"
+            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle fs-4"></i>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end user-profile-dropdown" aria-labelledby="userProfileDropdown"
+            *ngIf="userProfile">
+            <li class="px-3 py-2">
+              <strong>Name:</strong> {{ userProfile?.name }}<br>
+              <strong>Role:</strong> {{ userProfile?.role }}<br>
+              <strong>Designation:</strong> {{ userProfile?.designation }}<br>
+              <strong>Zone:</strong> {{ userProfile?.zone }}<br>
+              <strong>Division:</strong> {{ userProfile?.division }}
+            </li>
+          </ul>
+        </li>
+
+
+
+
+        <!-- Logout Button -->
+        <li class="nav-item">
+          <button class="btn btn-outline-light" type="button" (click)="loadComponent('logout')" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </li>
+        <li class="nav-item">
+          Session Expires In: {{ formattedTime }}
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Container for dynamically injected component -->
+<ng-container #container></ng-container>

@@ -1,0 +1,305 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Contract Asset Details</h5>
+            <button class="btn btn-light" (click)="openDialog()">
+                <i class="bi bi-plus-lg me-2"></i>Add Contract Asset
+            </button>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search contract assets..."
+                        [(ngModel)]="searchText" (keyup)="filterContractAssets()">
+                </div>
+            </div>
+
+            <div class="table-responsive" >
+                <table class="table table-hover table-striped align-middle" >
+                    <thead class="table-light sticky-header">
+                        <tr>
+                            <th>Contract Code</th>
+                            <th>Station Name</th>
+                            <th>Location Name</th>
+                            <th>Stall</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of filteredContractAssetsList">
+                            <td>{{element.contract_code}}</td>
+                            <td>{{element.station_name}}</td>
+                            <td>{{element.contract_location}}</td>
+                            <td>{{element.stall}}</td>
+                            <td>{{element.type}}</td>
+                            <td>
+                                <span *ngIf="element.contract_details_award_status === 'yes'" class="badge bg-success">
+                                    Awarded
+                                </span>
+                                <span *ngIf="element.contract_details_award_status !== 'yes'" class="badge bg-primary">
+                                    Vacant
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button *ngIf="element.contract_details_award_status !== 'yes'"
+                                        class="btn btn-sm btn-warning" (click)="openAwardDialog(element)"
+                                        title="Award Contract Asset">
+                                        <i class="bi bi-trophy"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-primary" (click)="editContractAsset(element)"
+                                        title="Edit Contract Asset">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button *ngIf="element.contract_details_award_status !== 'yes'"
+                                        class="btn btn-sm btn-danger" (click)="deleteContractAsset(element)"
+                                        title="Delete Contract Asset">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Contract Asset Dialog -->
+<ng-template #dialogTemplate>
+    <div class="modal-content">
+        <div class="modal-header bg-light">
+            <h5 class="modal-title">{{modalTitle}}</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <form [formGroup]="contractAssetForm" class="row g-3" (ngSubmit)="onSubmit()">
+                <div class="col-md-6">
+                    <label class="form-label">Contract Code</label>
+                    <input type="text" class="form-control" formControlName="contract_code" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="station_name">Station Name</label>
+                    <ng-select id="station_name" formControlName="station_name" [items]="filteredRailwayList"
+                        bindLabel="station" bindValue="station" placeholder="Select Station" [searchable]="true"
+                        [clearable]="true" class="form-select" (search)="filterStations($event)">
+                    </ng-select>
+                    <div class="invalid-feedback"
+                        *ngIf="contractAssetForm.get('station_name')?.invalid && contractAssetForm.get('station_name')?.touched">
+                        Station is required
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Location</label>
+                    <input type="text" class="form-control" formControlName="contract_location" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Stall</label>
+                    <select class="form-select" formControlName="stall" required>
+                        <option *ngFor="let option of locationType" [value]="option.contract_location_type">
+                            {{option.contract_location_type}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Type</label>
+                    <select class="form-select" formControlName="type" (change)="onCategoryChange($event)" required>
+                        <option [value]="null" disabled selected>Select a category</option>
+                        <option *ngFor="let cat of category" [value]="cat.categoryname">
+                            {{ cat.categoryname }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" formControlName="status" required>
+                        <option *ngFor="let option of statusOptions" [value]="option.value">
+                            {{option.name}}
+                        </option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="onSubmit()"
+                [disabled]="contractAssetForm.invalid">Save</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Award Contract Dialog -->
+<ng-template #awardDialog>
+    <div class="modal-content">
+        <div class="modal-header bg-light">
+            <h5 class="modal-title">Award Contract Asset</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <form [formGroup]="awardForm" class="row g-3" (ngSubmit)="awardContract()">
+                <!-- Contract Asset Details -->
+                <div class="col-12 mb-3">
+                    <h6 class="border-bottom pb-2">Contract Asset Details</h6>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Contract Code</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.contract_code" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Station Name</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.station_name" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Contract Location</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.contract_location" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Stall</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.stall" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Type</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.type" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Status</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.status" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Zone</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.zone" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Division</label>
+                    <input type="text" class="form-control" [value]="selectedAsset?.division" readonly>
+                </div>
+
+                <!-- Licensee Selection -->
+                <div class="col-12 mt-4 mb-3">
+                    <h6 class="border-bottom pb-2">Licensee Details</h6>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Select Licensee</label>
+                    <ng-select [items]="licenseeList" bindValue="id" bindLabel="Licensee_firm_name"
+                        formControlName="licensee_id" placeholder="Choose a licensee..." [searchable]="true"
+                        (change)="onLicenseeChange($event)">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.Licensee_firm_name }} - {{ item.Licensee_name }}
+                        </ng-template>
+                    </ng-select>
+                </div>
+
+                <!-- Selected Licensee Details -->
+                <ng-container *ngIf="selectedLicensee">
+                    <div class="col-md-6">
+                        <label class="form-label">Firm Name</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee.Licensee_firm_name" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Licensee Name</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee.Licensee_name" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee.mobile" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">PAN</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee.pan" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Type</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee?.type" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Status</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee?.status" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Zone</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee?.zone" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Division</label>
+                        <input type="text" class="form-control" [value]="selectedLicensee?.division" readonly>
+                    </div>
+                </ng-container>
+
+                <!-- Contract Details -->
+                <div class="col-12 mt-4 mb-3">
+                    <h6 class="border-bottom pb-2">Contract Details</h6>
+                </div>
+
+               <div class="col-md-6">
+    <label class="form-label">Manager Mobile</label>
+    <input
+        type="text"
+        class="form-control"
+        formControlName="managermobile"
+        maxlength="10"
+        pattern="^[0-9]{10}$"
+        required
+    >
+    <div class="invalid-feedback" *ngIf="awardForm.get('managermobile')?.invalid && awardForm.get('managermobile')?.touched">
+        Please enter a valid 10-digit mobile number
+    </div>
+    <small class="form-text" style="color: red; font-weight: 600;">User can log in using the above mobile number.</small>
+</div>
+
+
+                <div class="col-md-6">
+                    <label class="form-label">Mode of Payment</label>
+                    <select class="form-select" formControlName="activity" required>
+                        <option value="" disabled selected>Select Payment</option>
+                        <option *ngFor="let type of paymentMode" [value]="type.mode_of_payment">
+                            {{ type.mode_of_payment }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Mode of Operation</label>
+                    <select class="form-select" formControlName="mode_of_operation" required>
+                        <option value="" disabled selected>Select Mode</option>
+                        <option *ngFor="let mode of operationModes" [value]="mode.modeofoperation">
+                            {{mode.modeofoperation}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">No. of Employees</label>
+                    <input type="number" class="form-control" formControlName="no_of_employees" min="0" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Contract Period From Date</label>
+                    <input type="date" class="form-control" formControlName="from_date" (change)="calculateDuration()" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Contract Period To Date</label>
+                    <input type="date" class="form-control" formControlName="to_date" (change)="calculateDuration()" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Duration</label>
+                    <input type="text" class="form-control" formControlName="duration" readonly>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Remarks</label>
+                    <textarea class="form-control" formControlName="remarks" rows="3"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="awardContract()">Award Contract</button>
+        </div>
+    </div>
+</ng-template>

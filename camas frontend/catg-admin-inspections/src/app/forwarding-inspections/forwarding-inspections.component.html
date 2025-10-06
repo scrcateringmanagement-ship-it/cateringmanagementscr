@@ -1,0 +1,157 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Forwarding Inspections Details</h5>
+        </div>
+
+        <div class="card-body p-4">           
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Inspection Date</th>
+                            <th>Unit Number</th>
+                            <th>Inspection Mode</th>
+                            <th>Def. Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!inspdata || inspdata.length === 0">
+                            <td colspan="8" class="text-center py-3">No inspection details available</td>
+                        </tr>
+                        <tr *ngFor="let item of inspdata">
+                            <td>{{ item.inspection_date | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ item.unit_number }}</td>
+                            <td>{{ item.inspection_mode }}</td>
+                            <td>{{ item.deficiency_category }}</td>
+                               <td>
+                                                       
+                            <span class="badge" [ngClass]="{
+                                'bg-success': item.status_update == '0',
+                                'bg-warning': item.status_update == '3'
+                            }">
+                                {{ item.status_update == '0' ? 'For Forwarding' :
+                                item.status_update == '3' ? 'Returned Back' : 'Unknown Status' }}
+                            </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" (click)="ViewIdcarddetails(idcardModal, item)">
+                                    <i class="bi bi-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for ID Card Details -->
+<ng-template #idcardModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="idcardModalLabel">Forwarding Inspections Details</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="inspdatabyid">
+            <div *ngIf="successMessage" class="alert alert-success mb-3">
+                {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.licensee_name != null">
+                    <strong>Licensee Name:</strong> {{ inspdatabyid.licensee_name }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.licensee_number != null">
+                    <strong>Licensee Number:</strong> {{ inspdatabyid.licensee_number }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.licensee_division != null">
+                    <strong>Licensee Division:</strong> {{ inspdatabyid.licensee_division }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.inspection_date != null">
+                    <strong>Inspection Date:</strong> {{ inspdatabyid.inspection_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.inspection_mode != null">
+                    <strong>Inspection Mode:</strong> {{ inspdatabyid.inspection_mode }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.train_number != null">
+                    <strong>Train Number:</strong> {{ inspdatabyid.train_number }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.unit_number != null">
+                    <strong>Unit Number:</strong> {{ inspdatabyid.unit_number }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.deficiency_category != null">
+                    <strong>Deficiency Category:</strong> {{ inspdatabyid.deficiency_category }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.deficiency_details != null">
+                    <strong>Deficiency Details:</strong> {{ inspdatabyid.deficiency_details }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.fine_imposed != null">
+                    <strong>Fine Imposed:</strong> {{ inspdatabyid.fine_imposed || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.action_taken != null">
+                    <strong>Action Taken:</strong> {{ inspdatabyid.action_taken || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.section != null">
+                    <strong>Section:</strong> {{ inspdatabyid.section || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.station != null">
+                    <strong>Station:</strong> {{ inspdatabyid.station || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.status_update != null">
+                    <strong>Status Update:</strong> {{ inspdatabyid.status_update || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.vendor_name != null">
+                    <strong>Vendor Name:</strong> {{ inspdatabyid.vendor_name || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.vendor_aadhar != null">
+                    <strong>Vendor Aadhar:</strong> {{ inspdatabyid.vendor_aadhar || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.action_remarks != null">
+                    <strong>Action Taken Remarks:</strong> {{ inspdatabyid.action_remarks || 'N/A' }}
+                </div>
+                <!-- Add Approver Dropdown -->
+                <div class="col-md-6 mb-3" *ngIf="ccimenuselect === true && appdata.length > 0">
+                    <strong>Select Approver:</strong>
+                    <ng-select
+                        [(ngModel)]="selectedApproverId"
+                        [items]="appdata"
+                        bindValue="id"
+                        bindLabel="name"
+                        placeholder="Select an approver"
+                        [clearable]="false"
+                        [searchable]="true"
+                    >
+                    </ng-select>
+                </div>
+                <!-- Add Remarks Textarea -->
+                <div class="col-md-6 mb-3" *ngIf="ccimenuselect === true">
+                    <strong>Remarks:</strong>
+                    <textarea
+                        [(ngModel)]="remarks"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Enter remarks"
+                    ></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button
+                type="button"
+                *ngIf="ccimenuselect === true && selectedIdcard"
+                class="btn btn-success"
+                (click)="forward()"
+                [disabled]="isLoading || !selectedApproverId"
+            >
+                <i class="bi bi-send"></i> {{ isLoading ? 'Processing...' : 'Forward' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>

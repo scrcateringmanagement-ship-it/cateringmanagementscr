@@ -1,0 +1,72 @@
+.table-responsive {
+  margin-top: 20px;
+}
+
+.btn-action {
+  margin-right: 8px;
+}
+
+.sticky-header th {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+  /* same as .table-light */
+  z-index: 10;
+  /* keep above tbody rows */
+}
+
+
+.card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.badge {
+  font-size: 0.85em;
+  padding: 0.5em 0.75em;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+/* ng-select styles */
+.ng-select .ng-select-container {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  min-height: 38px;
+  align-items: center;
+}
+
+.ng-select.ng-select-focused .ng-select-container {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.ng-select .ng-dropdown-panel {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ng-select .ng-option {
+  padding: 0.5rem;
+}
+
+.ng-select .ng-option:hover {
+  background-color: #f8f9fa;
+}
+
+.ng-select .ng-option.ng-option-selected {
+  background-color: #007bff;
+  color: white;
+}

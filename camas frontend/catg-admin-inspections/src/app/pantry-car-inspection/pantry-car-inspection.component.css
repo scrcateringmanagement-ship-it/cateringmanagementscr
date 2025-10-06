@@ -1,0 +1,50 @@
+.custom-add {
+    margin: 40px 100px 10px auto;
+    display: block;
+}
+
+.custom-head {
+
+    color: black;
+    background-color: rgb(255, 255, 255);
+    font-size: 20px !important;
+    text-transform: uppercase;
+}
+
+.custom-filter{
+    display: flex;
+     align-items: center;
+}
+table, th, td {
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+table {
+  transform: none !important;
+}
+.custom-head, th, td {
+  font-size: 14px;   
+  font-weight: 500;
+
+}
+th:last-child, td:last-child {
+  min-width: 120px;   
+  text-align: center;
+  white-space: nowrap;
+}
+/* Header row background + text color */
+.table thead th {
+  background-color: #d3d3d3 !important; /* light gray */
+  color: #5a2e0e !important;            /* dark brown */
+  font-weight: 600;
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+    border-radius: 0 !important;
+    --mdc-dialog-container-shape: 0 !important;
+}
+
+
+
+

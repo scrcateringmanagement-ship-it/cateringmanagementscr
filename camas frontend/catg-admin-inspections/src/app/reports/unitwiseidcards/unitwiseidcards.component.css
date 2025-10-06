@@ -1,0 +1,17 @@
+.table th {
+  font-weight: 600;
+}
+.table-responsive {
+  margin-top: 20px;
+}
+table {
+  table-layout: auto;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.bg-yellow { background-color: #fff59d; color: black; }
+.bg-red { background-color: #ef9a9a; color: black; }
+.bg-green { background-color: #a5d6a7; color: black; }
+.bg-blue { background-color: #e3f2fd; color: black; }
+.bg-pred { background-color: #af0707; color: rgb(241, 233, 233); }

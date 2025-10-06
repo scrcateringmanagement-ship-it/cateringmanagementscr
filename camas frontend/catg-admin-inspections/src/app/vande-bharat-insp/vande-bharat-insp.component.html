@@ -1,0 +1,122 @@
+<div class="container-fluid py-4">
+  <mat-card class="p-4 card-shadow">
+    <!-- Header with Title + ADD Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Vande Bharat Inspections</h2>
+      <button mat-raised-button color="primary" (click)="goToRegistration()">
+        <mat-icon class="me-1">add</mat-icon> ADD
+      </button>
+    </div>
+
+    <!-- Filter Row -->
+    <div class="row g-3 align-items-end mb-3">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" (dateChange)="updateFromDate()">
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" (dateChange)="updateToDate()">
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Search Train No.</mat-label>
+          <input matInput [(ngModel)]="search_train_no" (input)="apply_filter()">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <button mat-raised-button color="primary" class="w-100" (click)="loadInspectionsByDate()">
+          <mat-icon>filter_alt</mat-icon> Filter
+        </button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mb-3 d-flex gap-2">
+      <button mat-stroked-button color="accent" (click)="printTable()">
+        <mat-icon>print</mat-icon> Print
+      </button>
+      <button mat-stroked-button color="warn" (click)="exportToExcel()">
+        <mat-icon>file_download</mat-icon> Export Excel
+      </button>
+    </div>
+
+    <!-- Inspection Table -->
+    <div id="print-section" class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Train Number</th>
+            <th>Date of Inspection</th>
+            <th>Inspecting Officer</th>
+            <th>From - To</th>
+            <th>Short Service</th>
+            <th>Rail Neer Non Availability</th>
+            <th>Quality</th>
+            <th>Quantity</th>
+            <th>Hygiene</th>
+            <th>Misbehaviour</th>
+            <th>Fine Imposed (₹)</th>
+            <th>Warned</th>
+            <th>Suitably Advised</th>
+            <th>Not Substantiated</th>
+            <th>Resolved Onboard</th>
+            <th>Any Other</th>
+            <th>Total</th>
+            <th>Remarks</th>
+            <th>PCM Name</th>
+            <th>PCM Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let insp of vandeBharatList; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ insp.pc_details?.T_Number }}</td>
+            <td>{{ insp.date_of_insp }}</td>
+            <td>{{ insp.inspe_officer_official_name }}</td>
+            <td>{{ insp.from_to }}</td>
+            <td>{{ insp.short_service }}</td>
+            <td>{{ insp.rail_neer_non_avail }}</td>
+            <td>{{ insp.quality }}</td>
+            <td>{{ insp.quantity }}</td>
+            <td>{{ insp.hygiene }}</td>
+            <td>{{ insp.miss_behave }}</td>
+            <td>{{ insp.fine_imposed }}</td>
+            <td>{{ insp.warned }}</td>
+            <td>{{ insp.suitably_adv }}</td>
+            <td>{{ insp.not_Substantiated }}</td>
+            <td>{{ insp.resolved_adv }}</td>
+            <td>{{ insp.any_other }}</td>
+            <td>{{ insp.total }}</td>
+            <td>{{ insp.other_remarks }}</td>
+            <td>{{ insp.pc_details?.pcm_name }}</td>
+            <td>{{ insp.pc_details?.pcm_number }}</td>
+            <td>
+              <button mat-icon-button color="primary" (click)="editVandeBharat(insp.id)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="vandeBharatList.length === 0">
+            <td colspan="23" class="text-center">
+              No inspections found for selected criteria.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

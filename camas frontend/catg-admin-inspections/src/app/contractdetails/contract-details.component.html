@@ -1,0 +1,238 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Contract Details</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search ..." [(ngModel)]="searchText"
+                        (keyup)="filterContractors()">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle ">
+                    <thead class="table-light sticky-header">
+                        <tr>
+                            <th>STN CATEGORY</th> <!-- Add this new column -->
+                            <th>STATION</th>
+                            <th>SECTION</th>
+                            <th>TYPE</th>
+                            <th>LICENSEE NAME</th>
+                            <th>UNIT NO.</th>
+                            <th>LOCATION</th>
+                            <th>CP FROM</th>
+                            <th>CP TO</th>
+                            <!-- <th>STATUS</th> -->
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of filteredContractorList">
+                            <td>{{element.stn_category}}</td> <!-- Add this new cell -->
+                            <td>{{element.contract_station_name}}</td>
+                            <td>{{element.contract_station_name}}</td>
+                            <td>{{element.contract_type}}</td>
+                            <td>{{element.Licensee_name}}</td>
+                            <td>{{element.contract_code}}</td>
+                            <td>{{element.contract_location}}</td>
+                            <td>{{element.contract_details_start_date | date:'dd-MM-yyyy'}}</td>
+                            <td>{{element.contract_details_end_date | date:'dd-MM-yyyy'}}</td>
+                            <!-- <td>
+                                <span class="badge" [ngClass]="{'bg-success': element.Lincensee_status === 'active', 
+                                              'bg-danger': element.Lincensee_status === 'inactive'}">
+                                    {{element.Lincensee_status}}
+                                </span>
+                            </td> -->
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary" (click)="editContractor(element)"
+                                        title="View/Edit Contract Details">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" (click)="reAssignContracts(element)"
+                                        title="Re-Award Contract Details">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger" (click)="terminateContract(element)"
+                                        title="Terminate Contract">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #dialogTemplate>
+    <div class="modal-content">
+        <div class="modal-header bg-light">
+            <h5 class="modal-title">{{modalTitle}}</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <form [formGroup]="contractorForm" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Contract Code</label>
+                    <input type="text" class="form-control" formControlName="contract_code" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Licensee Firm Name</label>
+                    <input type="text" class="form-control" formControlName="Licensee_firm_name" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Licensee Name</label>
+                    <input type="text" class="form-control" formControlName="Licensee_name" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Mobile</label>
+                    <input type="tel" class="form-control" formControlName="Licensee_mobile" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">PAN</label>
+                    <input type="text" class="form-control" formControlName="Lincensee_pan" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Type</label>
+                    <input type="text" class="form-control" formControlName="Lincensee_type" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Status</label>
+                    <input type="text" class="form-control" formControlName="Lincensee_status" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Zone</label>
+                    <input type="text" class="form-control" formControlName="Lincensee_zone" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Division</label>
+                    <input type="text" class="form-control" formControlName="Lincensee_division" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Station Name</label>
+                    <input type="text" class="form-control" formControlName="contract_station_name" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Stall</label>
+                    <input type="text" class="form-control" formControlName="contract_stall" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Type</label>
+                    <input type="text" class="form-control" formControlName="contract_type" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Status</label>
+                    <input type="text" class="form-control" formControlName="contract_status" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Zone</label>
+                    <input type="text" class="form-control" formControlName="contract_zone" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Division</label>
+                    <input type="text" class="form-control" formControlName="contract_division" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Contract Location</label>
+                    <input type="text" class="form-control" formControlName="contract_location" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" class="form-control" formControlName="contract_details_start_date"
+                        (change)="calculateDuration()">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">End Date</label>
+                    <input type="date" class="form-control" formControlName="contract_details_end_date"
+                        (change)="calculateDuration()">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Mode of Payment</label>
+                    <select class="form-select" formControlName="contract_details_activity">
+                        <option value="" disabled>Select Mode of Payment</option>
+                        <option *ngFor="let option of modeOfPayments" [value]="option.mode_of_payment">
+                            {{option.mode_of_payment}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Remarks</label>
+                    <input type="text" class="form-control" formControlName="contract_details_remarks">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Mode of Operation</label>
+                    <select class="form-select" formControlName="contract_details_mode_of_operation">
+                        <option value="" disabled>Select Mode of Operation</option>
+                        <option *ngFor="let option of modeOfOperations" [value]="option.modeofoperation">
+                            {{option.modeofoperation}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Manager Mobile</label>
+                    <input type="text" class="form-control" formControlName="managermobile" maxlength="10"
+                        pattern="^[0-9]{10}$" required>
+                    <div class="invalid-feedback"
+                        *ngIf="contractorForm.get('managermobile')?.invalid && contractorForm.get('managermobile')?.touched">
+                        Please enter a valid 10-digit mobile number
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Number of Employees</label>
+                    <input type="number" class="form-control" formControlName="contract_details_no_of_employees">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Duration</label>
+                    <input type="text" class="form-control" formControlName="contract_details_duration" readonly>
+                </div>
+
+                <!-- Add Termination Fields -->
+                <div class="col-md-6" *ngIf="isTerminating">
+                    <label class="form-label">Termination Date</label>
+                    <input type="date" class="form-control" formControlName="termination_date" >
+                </div>
+
+                <div class="col-12" *ngIf="isTerminating">
+                    <label class="form-label">Termination Remarks</label>
+                    <textarea class="form-control" formControlName="remarks" rows="3" ></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="onSubmit()">
+                {{isTerminating ? 'Terminate Contract' : 'Save'}}
+            </button>
+        </div>
+    </div>
+</ng-template>

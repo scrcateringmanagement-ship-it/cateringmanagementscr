@@ -1,0 +1,19 @@
+.bg-container {
+    background-image: url('/cateringBG.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    position: relative;
+    top: 0;
+    left: 0;
+  
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(117, 143, 212); /* fallback for empty space */
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

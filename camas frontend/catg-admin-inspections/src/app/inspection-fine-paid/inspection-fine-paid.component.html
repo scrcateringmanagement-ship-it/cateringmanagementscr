@@ -1,0 +1,164 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Inspection Fine Details</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Inspection Date</th>
+                            <th>Unit Number</th>
+                            <th>Officaial Name</th>
+                            <th>Designation</th>
+                            <th>Inspection Mode</th>
+                            <th> Def. Category</th>
+                            <th>Paid Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!inspdata || inspdata.length === 0">
+                            <td colspan="8" class="text-center py-3">No inspection details available</td>
+                        </tr>
+                        <tr *ngFor="let item of inspdata">
+                            <td>{{ item.inspection_date | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ item.unit_number }}</td>
+                            <td>{{item.official_name}}</td>
+                            <td>{{item.official_designation}}</td>
+                            <td>{{ item.inspection_mode }}</td>
+                            <td>{{ item.deficiency_category }}</td>
+                            <td>
+                                <span [ngClass]="{
+                                    'badge bg-danger': item.paidstatus == 0,
+                                    'badge bg-success': item.paidstatus !== 0
+                                }">
+                                    {{ item.paidstatus == 0 ? 'Unpaid' : 'Paid' }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <button class="btn btn-sm btn-primary" (click)="ViewIdcarddetails(idcardModal, item)">
+                                    <i class="bi bi-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for ID Card Details -->
+<ng-template #idcardModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="idcardModalLabel">Inspection Fine Details</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="inspdatabyid">
+            <div *ngIf="successMessage" class="alert alert-success mb-3">
+                {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.licensee_name != null">
+                    <strong>Licensee Name:</strong> {{ inspdatabyid.licensee_name }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.licensee_number != null">
+                    <strong>Licensee Number:</strong> {{ inspdatabyid.licensee_number }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.licensee_division != null">
+                    <strong>Licensee Division:</strong> {{ inspdatabyid.licensee_division }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.inspection_date != null">
+                    <strong>Inspection Date:</strong> {{ inspdatabyid.inspection_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.inspection_mode != null">
+                    <strong>Inspection Mode:</strong> {{ inspdatabyid.inspection_mode }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.official_name != null">
+                    <strong>Official Name:</strong> {{ inspdatabyid.official_name }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.official_designation != null">
+                    <strong>Designation:</strong> {{ inspdatabyid.official_designation }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.train_number != null">
+                    <strong>Train Number:</strong> {{ inspdatabyid.train_number }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.unit_number != null">
+                    <strong>Unit Number:</strong> {{ inspdatabyid.unit_number }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.deficiency_category != null">
+                    <strong>Deficiency Category:</strong> {{ inspdatabyid.deficiency_category }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.deficiency_details != null">
+                    <strong>Deficiency Details:</strong> {{ inspdatabyid.deficiency_details }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.fine_imposed != null">
+                    <strong>Fine Imposed:</strong> {{ inspdatabyid.fine_imposed || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.action_taken != null">
+                    <strong>Action Taken:</strong> {{ inspdatabyid.action_taken || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.section != null">
+                    <strong>Section:</strong> {{ inspdatabyid.section || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.station != null">
+                    <strong>Station:</strong> {{ inspdatabyid.station || 'N/A' }}
+                </div>              
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.vendor_name != null">
+                    <strong>Vendor Name:</strong> {{ inspdatabyid.vendor_name || 'N/A' }}
+                </div>       
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.vendor_id != null">
+                    <strong>Vendor ID:</strong> {{ inspdatabyid.vendor_id || 'N/A' }}
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.action_remarks != null">
+                    <strong>Action Taken Remarks:</strong> {{ inspdatabyid.action_remarks || 'N/A' }}
+                </div>
+
+                <!-- Add these fields before the action_remarks field in the modal -->
+                <div class="col-md-6 mb-3">
+                    <label for="payment_date" class="form-label">Payment Date</label>
+                    <input type="date" class="form-control" id="payment_date" [(ngModel)]="inspdatabyid.payment_date"
+                        name="payment_date">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="receipt_number" class="form-label">Receipt Number</label>
+                    <input type="text" class="form-control" id="receipt_number"
+                        [(ngModel)]="inspdatabyid.receipt_number" name="receipt_number">
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.action_taken !== 'Handed Over To IPF'">
+                    <label for="paid_amount" class="form-label">Paid Amount</label>
+                    <input type="number" class="form-control" id="paid_amount" [(ngModel)]="inspdatabyid.fine_imposed"
+                        name="paid_amount" readonly>
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="inspdatabyid.action_taken === 'Handed Over To IPF'">
+                    <label for="prosecuted_amount" class="form-label">Prosecuted Amount</label>
+                    <input type="number" class="form-control" id="prosecuted_amount" name="prosecuted_amount"
+                        [(ngModel)]="inspdatabyid.prosecuted_amount" aria-describedby="prosecuted_amount">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="paid_location" class="form-label">Paid Location</label>
+                    <input type="text" class="form-control" id="paid_location" [(ngModel)]="inspdatabyid.paid_location"
+                        name="paid_location">
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="savePaymentDetails()">Save Payment Details</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>

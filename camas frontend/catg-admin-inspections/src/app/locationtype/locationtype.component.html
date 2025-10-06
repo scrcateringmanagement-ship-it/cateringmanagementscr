@@ -1,0 +1,144 @@
+<div class="container py-4">
+  <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Location Type Management</h5>
+      <button class="btn btn-light" (click)="openDialog()">
+        <i class="bi bi-plus-circle me-2"></i>Add Location Type
+      </button>
+    </div>
+
+    <div class="card-body p-4">
+      <div class="mb-4">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-search"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search location type..."
+            [(ngModel)]="searchText"
+            (keyup)="filterTypes()"
+          />
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Category</th>
+              <th>Location Type Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let locationtype of filteredLocationTypeList">
+              <td>{{ locationtype.contract_category }}</td>
+              <td>{{ locationtype.contract_location_type }}</td>
+              <td>
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-sm btn-primary"
+                    (click)="editType(locationtype)"
+                    title="Edit Location Type"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="deleteType(locationtype)"
+                    title="Delete Location Type"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredLocationTypeList.length === 0">
+              <td colspan="2" class="text-center py-3">No location types found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #dialogTemplate>
+  <div class="modal-header bg-light">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <button type="button" class="btn-close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body p-4">
+    <form [formGroup]="locationTypeForm" class="row g-3">
+      <div class="col-12">
+        <label class="form-label"
+          >Category <span class="text-danger">*</span></label
+        >
+        <select
+          class="form-select"
+          formControlName="categoryname"
+          [ngClass]="{
+            'is-invalid':
+              locationTypeForm.get('categoryname')?.invalid &&
+              locationTypeForm.get('categoryname')?.touched
+          }"
+        >
+          <option value="" disabled>Select a category</option>
+          <option *ngFor="let category of categoryList" [value]="category.categoryname">
+            {{ category.categoryname }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            locationTypeForm.get('categoryname')?.invalid &&
+            locationTypeForm.get('categoryname')?.touched
+          "
+        >
+          Category is required
+        </div>
+      </div>
+      <div class="col-12">
+        <label class="form-label"
+          >Location Type Name <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          formControlName="contract_location_type"
+          placeholder="Enter location type name"
+          [ngClass]="{
+            'is-invalid':
+              locationTypeForm.get('contract_location_type')?.invalid &&
+              locationTypeForm.get('contract_location_type')?.touched
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            locationTypeForm.get('contract_location_type')?.invalid &&
+            locationTypeForm.get('contract_location_type')?.touched
+          "
+        >
+          Location type name is required
+        </div>
+      </div>
+    
+    </form>
+  </div>
+  <div class="modal-footer bg-light">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="locationTypeForm.invalid"
+      (click)="onSubmit()"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>

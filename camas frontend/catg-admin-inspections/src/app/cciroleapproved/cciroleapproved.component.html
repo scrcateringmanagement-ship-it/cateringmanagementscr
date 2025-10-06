@@ -1,0 +1,249 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Verified ID Card Details By Office User</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search In ID Card Details..."
+                        [(ngModel)]="searchText" (keyup)="filteridcards()">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Applied On</th>
+                            <th>Contract Code</th>
+                            <th>Licensee Name</th>
+                            <th>Vendor Name</th>
+                            <th>V. Desig</th>
+                            <th>Card Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                           <!-- (click)="ViewIdcarddetails(idcardModal, element)" -->
+                        <tr *ngIf="filteredidcardsList.length === 0">
+                            <td colspan="7" class="text-center py-3">No ID card details available</td>
+                        </tr>
+                        <tr *ngFor="let element of filteredidcardsList">
+                            <td>{{ element.date_of_application | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ element.contract_code }}</td>
+                            <td>{{ element.license_name }}</td>
+                            <td>{{ element.first_name }}&nbsp;{{element.middle_initial}}&nbsp;{{ element.last_name }}</td>
+                            <td>{{ element.designation }}</td>
+                            <td>{{ element.type_of_card }}</td>
+                            <td>
+                                 <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary"
+                                        (click)="ViewIdcarddetails(idcardModal, element)"
+                                        title="View/Edit ID Card Details">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #idcardModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="idcardModalLabel">ID Card Details</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedIdcard">
+            <div *ngIf="successMessage" class="alert alert-success mb-3">
+                {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Name:</strong> {{ selectedIdcard.first_name }} {{ selectedIdcard.middle_initial }} {{
+                    selectedIdcard.last_name }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Aadhar Number:</strong> {{ selectedIdcard.aadhar_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date of Birth:</strong> {{ selectedIdcard.dob | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Gender:</strong> {{ selectedIdcard.gender }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Address:</strong> {{ selectedIdcard.address }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Phone Number:</strong> {{ selectedIdcard.phone_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Email:</strong> {{ selectedIdcard.email }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Designation:</strong> {{ selectedIdcard.designation }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Position:</strong> {{ selectedIdcard.position }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Card Type:</strong> {{ selectedIdcard.type_of_card }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date of Application:</strong> {{ selectedIdcard.date_of_application | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Zone:</strong> {{ selectedIdcard.zone }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Division:</strong> {{ selectedIdcard.division }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Station:</strong> {{ selectedIdcard.station }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical By:</strong> {{ selectedIdcard.medical_by }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical Date:</strong> {{ selectedIdcard.medical_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical Valid Upto:</strong> {{ selectedIdcard.medical_valid_upto | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Cert No:</strong> {{ selectedIdcard.police_cert_no }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Cert Date:</strong> {{ selectedIdcard.police_cert_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Station:</strong> {{ selectedIdcard.police_station }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>LF/PLF/FINE/PI Paid Period:</strong>
+                    {{ selectedIdcard.last_paid_date.split(' to ')[0] | date:'dd-MM-yyyy' }}
+                    to
+                    {{ selectedIdcard.last_paid_date.split(' to ')[1] | date:'dd-MM-yyyy' }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Licensee Remarks:</strong> {{ selectedIdcard.licensee_remarks }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>CCI Remarks:</strong> {{ selectedIdcard.cci_accpet_remarks}}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Office User Remarks:</strong> {{ selectedIdcard.officer_accept_remarks}}
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <strong>Files:</strong>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.aadhar_card_file, 'Aadhar Card'); $event.preventDefault()">Aadhar
+                                Card</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.photo, 'Photo'); $event.preventDefault()">Photo</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.medical_cert_file, 'Medical Certificate'); $event.preventDefault()">Medical
+                                Certificate</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.police_cert_file, 'Police Certificate'); $event.preventDefault()">Police
+                                Certificate</a>
+                        </li>
+                        <!-- <li class="list-group-item">
+                            <a href="#" (click)="selectFile(selectedIdcard.money_receipt_file, 'Money Receipt'); $event.preventDefault()">Money Receipt</a>
+                        </li> -->
+                      
+                        <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.last_paid_file, 'Last Paid File'); $event.preventDefault()">LF/PLF/Fine/PI
+                                (Penal Interest) Advice Notice</a>
+                        </li>
+                          <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.dd_mr_file, 'DD/MR File'); $event.preventDefault()">LF
+                                Paid Receipt (MERS/e-auction payment)</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#"
+                                (click)="selectFile(selectedIdcard.vendor_signature_file, 'Vendor Signature'); $event.preventDefault()">Vendor
+                                Signature</a>
+                        </li>
+                    </ul>
+
+                    <!-- Display selected file -->
+                    <div *ngIf="selectedFile">
+                        <h6>Viewing: {{ selectedFileName }}</h6>
+                        <div *ngIf="isImage(selectedFile)" class="text-center">
+                            <div class="mb-2">
+                                <button class="btn btn-sm btn-primary me-2" (click)="zoomIn()" title="Zoom In">
+                                    <i class="bi bi-zoom-in"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary me-2" (click)="zoomOut()" title="Zoom Out">
+                                    <i class="bi bi-zoom-out"></i>
+                                </button>
+                                <button class="btn btn-sm btn-secondary" (click)="resetZoom()" title="Reset Zoom">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
+                            </div>
+                            <div class="image-container" style="overflow: auto; max-height: 400px;">
+                                <img [src]="selectedFile" class="img-fluid rounded"
+                                    [style.transform]="'scale(' + imageScale + ')'"
+                                    [style.transformOrigin]="'center center'"
+                                    style="transition: transform 0.2s ease-in-out;" alt="Selected File">
+                            </div>
+                        </div>
+                        <div *ngIf="isPdf(selectedFile)" class="pdf-viewer">
+                            <pdf-viewer [src]="selectedFile" [show-all]="true" [fit-to-page]="true"
+                                style="height: 400px;"></pdf-viewer>
+                        </div>
+                        <div *ngIf="!isImage(selectedFile) && !isPdf(selectedFile)" class="alert alert-info">
+                            <p>Preview not available for this file type.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+
+                    <div class="mb-3">
+                        <label for="remarks" class="form-label"><strong>Remarks:</strong></label>
+                        <textarea id="remarks" name="remarks" [(ngModel)]="remarks" class="form-control" rows="4"
+                            placeholder="Enter remarks here..."></textarea>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" *ngIf="selectedIdcard" class="btn btn-success"
+                (click)="forwardIdCard()" [disabled]="isLoading">
+                <i class="bi bi-send"></i> {{ isLoading ? 'Processing...' : 'Approve' }}
+            </button>
+            <!-- <button type="button" *ngIf="approvermenuselect === true && selectedIdcard" class="btn btn-danger"
+                (click)="rejectIdCard()" [disabled]="isLoading">
+                <i class="bi bi-x-circle"></i> {{ isLoading ? 'Processing...' : 'Return' }}
+            </button> -->
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,236 @@
+<button class="btn btn-danger" onclick="history.back()">← Back</button>
+<div class="applied-container">
+
+  <h2>Applied ID Cards
+    <span style="font-size: 0.4em; margin-left: 20px;">
+      <span
+        style="display:inline-block;width:12px;height:12px;background:#a5d6a7;margin-right:5px;border-radius:2px;"></span>
+      Approved &nbsp;
+      <span
+        style="display:inline-block;width:12px;height:12px;background:#ef9a9a;margin-right:5px;border-radius:2px;"></span>
+      Rejected &nbsp;
+      <span
+        style="display:inline-block;width:12px;height:12px;background:#fff59d;margin-right:5px;border-radius:2px;"></span>
+      Reapplied &nbsp;
+      <span
+        style="display:inline-block;width:12px;height:12px;background:#e3f2fd;margin-right:5px;border-radius:2px;"></span>Applied
+      <span style="display:inline-block;width:12px;height:12px;margin-right:5px;border-radius:2px;"></span>&nbsp;-
+      (uv-under verification)</span>
+
+  </h2>
+
+
+
+
+  <!-- Search section -->
+  <div class="search-section">
+    <div class="search-group">
+      <label for="search">Search Applications:</label>
+      <div class="search-input-container">
+        <input type="text" id="search" [(ngModel)]="searchTerm" (input)="onSearch()"
+          placeholder="Search by name, Aadhar, email, address, designation, remarks, phone...">
+        <button *ngIf="searchTerm" class="btn-clear" (click)="clearSearch()" title="Clear search">
+          ×
+        </button>
+      </div>
+    </div>
+    <div class="search-info" *ngIf="searchTerm">
+      Showing {{ filteredApplications.length }} of {{ applications.length }} applications
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner">Loading...</div>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Applications table -->
+  <div *ngIf="!loading && !error">
+    <div class="no-data" *ngIf="filteredApplications.length === 0 && applications.length > 0">
+      No applications found matching "{{ searchTerm }}".
+    </div>
+
+    <div class="no-data" *ngIf="applications.length === 0">
+      No applications found.
+    </div>
+
+    <table class="applications-table" *ngIf="filteredApplications.length > 0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contract Code</th>
+          <th>Location</th>
+          <th>License ID</th>
+          <th>Zone</th>
+          <th>Division</th>
+          <th>Aadhar Number</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Designation</th>
+          <th>Remarks</th>
+          <th>Valid From</th>
+          <th>Valid To</th>
+          <th>status</th>
+          <th>Photo</th>
+          <th>Police Certificate</th>
+          <th>Aadhar Card</th>
+          <th>Signature</th>
+          <th>Money Receipt</th>
+          <th>Last Paid</th>
+          <th>DD/MR</th>
+           <th>annexure_one</th>
+          <th>annexure_two</th>
+          <th>annexure_three</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of filteredApplications" [ngStyle]="{
+      backgroundColor: getBgColor(app.status_update),
+      color: 'black'
+    }">
+          <td>{{ app.first_name }} {{ app.middle_initial }} {{ app.last_name }}</td>
+          <td>{{ app.contract_code }}</td>
+          <td>{{ app.location }}</td>
+          <td>{{ app.licensee_id }}</td>
+          <td>{{ app.zone }}</td>
+          <td>{{ app.division }}</td>
+          <td>{{ app.aadhar_number }}</td>
+          <td>{{ app.email }}</td>
+          <td>{{ app.phone_number }}</td>
+          <td>{{ app.address }}</td>
+          <td>{{ app.designation }}</td>
+          <td>{{ app.licensee_remarks }}</td>
+          <td>{{ formatDate(app.date_of_application) }}</td>
+          <td>{{ formatDate(app.medical_valid_upto) }}</td>
+          <td>{{ getStatus(app.status_update) }}</td>
+
+          <!-- Photo URL -->
+          <td>
+            <button *ngIf="hasValidFile(app.photo)" class="btn-view" (click)="viewImage(app.photo)">
+              View Photo
+            </button>
+            <span *ngIf="!hasValidFile(app.photo)">-</span>
+          </td>
+
+          <!-- Police Certificate URL -->
+          <td>
+            <button *ngIf="hasValidFile(app.police_cert_file)" class="btn-view"
+              (click)="viewImage(app.police_cert_file)">
+              View Police Cert
+            </button>
+            <span *ngIf="!hasValidFile(app.police_cert_file)">-</span>
+          </td>
+
+        
+
+          <!-- Aadhar Card -->
+          <td>
+            <button *ngIf="hasValidFile(app.aadhar_card_file)" class="btn-view"
+              (click)="viewImage(app.aadhar_card_file)">
+              View Aadhar
+            </button>
+            <span *ngIf="!hasValidFile(app.aadhar_card_file)">-</span>
+          </td>
+
+          <!-- Signature -->
+          <td>
+            <button *ngIf="hasValidFile(app.vendor_signature_file)" class="btn-view"
+              (click)="viewImage(app.vendor_signature_file)">
+              View Signature
+            </button>
+            <span *ngIf="!hasValidFile(app.vendor_signature_file)">-</span>
+          </td>
+
+          <!-- Money Receipt -->
+          <td>
+            <button *ngIf="hasValidFile(app.money_receipt_file)" class="btn-view"
+              (click)="viewImage(app.money_receipt_file)">
+              View Receipt
+            </button>
+            <span *ngIf="!hasValidFile(app.money_receipt_file)">-</span>
+          </td>
+
+          <!-- Last Paid -->
+          <td>
+            <button *ngIf="hasValidFile(app.last_paid_file)" class="btn-view" (click)="viewImage(app.last_paid_file)">
+              View Paid Receipt
+            </button>
+            <span *ngIf="!hasValidFile(app.last_paid_file)">-</span>
+          </td>
+
+          <!-- DD/MR File -->
+          <td>
+            <button *ngIf="hasValidFile(app.dd_mr_file)" class="btn-view" (click)="viewImage(app.dd_mr_file)">
+              View DD File
+            </button>
+            <span *ngIf="!hasValidFile(app.dd_mr_file)">-</span>
+          </td>
+
+            <!-- Medical Certificate -->
+          <td>
+            <button *ngIf="hasValidFile(app.medical_cert_file)" class="btn-view"
+              (click)="viewImage(app.medical_cert_file)">
+              View Medical Cert
+            </button>
+            <span *ngIf="!hasValidFile(app.medical_cert_file)">-</span>
+          </td>
+
+          <!-- Annexure Two -->
+          <td>
+            <button *ngIf="hasValidFile(app.annexure_two_file)" class="btn-view"
+              (click)="viewImage(app.annexure_two_file)">
+              View Annexure Two
+            </button>
+            <span *ngIf="!hasValidFile(app.annexure_two_file)">-</span>
+          </td>
+
+          <!-- Annexure Three -->
+          <td>
+            <button *ngIf="hasValidFile(app.annexure_three_file)" class="btn-view"
+              (click)="viewImage(app.annexure_three_file)">
+              View Annexure Three
+            </button>
+            <span *ngIf="!hasValidFile(app.annexure_three_file)">-</span>
+          </td>
+
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+  <!-- Image Modal -->
+  <div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Document Preview</h3>
+        <button class="close-button" (click)="closeImageModal()">×</button>
+      </div>
+      <div class="image-container">
+        <!-- Display image -->
+        <img [src]="selectedImage | safeUrl" alt="Document Preview" class="modal-image" (error)="onImageError($event)"
+          *ngIf="selectedImage">
+      </div>
+      <!-- Error message for failed image loads -->
+      <div class="image-error" *ngIf="imageLoadError">
+        <p>Unable to load image. Please check if the file exists.</p>
+        <p>Path: {{ selectedImage }}</p>
+      </div>
+    </div>
+  </div>
+</div>

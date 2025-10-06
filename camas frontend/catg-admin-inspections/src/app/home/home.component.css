@@ -1,0 +1,25 @@
+.dropdown-item {
+  cursor: pointer;
+}
+
+.user-profile-dropdown {
+  min-width: 250px; /* default Bootstrap is ~160px */
+  max-width: 300px;
+  padding: 10px 15px;
+  font-size: 0.95rem;
+}
+
+.user-profile-dropdown li {
+  white-space: normal; /* Allow wrapping */
+}
+
+.user-profile-dropdown li {
+  line-height: 1.6;
+}
+
+.user-profile-dropdown strong {
+  color: #0d6efd; /* Bootstrap primary */
+}
+
+
+

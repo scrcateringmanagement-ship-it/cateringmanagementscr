@@ -1,0 +1,176 @@
+<div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Rejected Id Card Details</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search In Id Card Details..."
+                        [(ngModel)]="searchText" (keyup)="filteridcards()">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Applied On</th> <!-- Add this new column -->
+                            <th>Contract code</th>
+
+                            <th>LICENSEE NAME</th>
+                            <th>Vendor Name</th>
+                            <th>V.Desig</th>
+                            <th>Card Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="filteredidcardsList.length === 0">
+                            <td colspan="8" class="text-center py-3">No ID card details available</td>
+                        </tr>
+                        <tr *ngFor="let element of filteredidcardsList">
+                            <td>{{element.date_of_application | date:'dd-MM-yyyy'}}</td> <!-- Add this new cell -->
+                            <td>{{element.contract_code}}</td>
+                            <td>{{element.license_name}}</td>
+
+                            <td>{{element.first_name}}&nbsp;{{element.first_name}}</td>
+                            <td>{{element.designation}}</td>
+                            <td>{{element.type_of_card}}</td>                           
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary" (click)="ViewIdcarddetails(idcardModal, element)"
+                                        title="View/Edit Contract Details">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for ID Card Details -->
+<ng-template #idcardModal let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="idcardModalLabel">ID Card Details</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedIdcard">
+            <div *ngIf="successMessage" class="alert alert-success mb-3">
+                {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Name:</strong> {{ selectedIdcard.first_name }} {{ selectedIdcard.middle_initial }}
+                    {{ selectedIdcard.last_name }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Aadhar Number:</strong> {{ selectedIdcard.aadhar_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date of Birth:</strong> {{ selectedIdcard.dob | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Gender:</strong> {{ selectedIdcard.gender }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Address:</strong> {{ selectedIdcard.address }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Phone Number:</strong> {{ selectedIdcard.phone_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Email:</strong> {{ selectedIdcard.email }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Designation:</strong> {{ selectedIdcard.designation }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Position:</strong> {{ selectedIdcard.position }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Card Type:</strong> {{ selectedIdcard.type_of_card }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date of Application:</strong> {{ selectedIdcard.date_of_application | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Zone:</strong> {{ selectedIdcard.zone }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Division:</strong> {{ selectedIdcard.division }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Station:</strong> {{ selectedIdcard.station }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical By:</strong> {{ selectedIdcard.medical_by }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical Date:</strong> {{ selectedIdcard.medical_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Medical Valid Upto:</strong> {{ selectedIdcard.medical_valid_upto | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Cert No:</strong> {{ selectedIdcard.police_cert_no }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Cert Date:</strong> {{ selectedIdcard.police_cert_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Police Station:</strong> {{ selectedIdcard.police_station }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Last Paid Date:</strong> {{ selectedIdcard.last_paid_date | date:'dd-MM-yyyy' }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Licensee Remarks:</strong> {{ selectedIdcard.licensee_remarks || 'N/A' }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    <strong>Files:</strong>
+                    <ul>
+                        <li><a href="#" (click)="openFile(selectedIdcard.aadhar_card_file); $event.preventDefault()">Aadhar Card</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.photo); $event.preventDefault()">Photo</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.medical_cert_file); $event.preventDefault()">Medical Certificate</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.police_cert_file); $event.preventDefault()">Police Certificate</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.money_receipt_file); $event.preventDefault()">Money Receipt</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.dd_mr_file); $event.preventDefault()">LF Paid Receipt (MERS/e-auction payment)</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.last_paid_file); $event.preventDefault()">Last Paid File</a></li>
+                        <li><a href="#" (click)="openFile(selectedIdcard.vendor_signature_file); $event.preventDefault()">Vendor Signature</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-12 mb-3" *ngIf="ccimenuselect === true">
+                    <div class="mb-3">
+                        <label for="remarks" class="form-label"><strong>CCI Remarks:</strong></label>
+                        <textarea id="remarks" name="remarks" [(ngModel)]="remarks" class="form-control"
+                            rows="4" placeholder="Enter remarks for forward/reject..." required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" *ngIf="ccimenuselect === true && selectedIdcard" class="btn btn-success"
+                (click)="forwardIdCard()" [disabled]="isLoading">
+                <i class="bi bi-send"></i> {{ isLoading ? 'Processing...' : 'Forward' }}
+            </button>
+            <button type="button" *ngIf="ccimenuselect === true && selectedIdcard" class="btn btn-danger"
+                (click)="rejectIdCard()" [disabled]="isLoading">
+                <i class="bi bi-x-circle"></i> {{ isLoading ? 'Processing...' : 'Reject' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>

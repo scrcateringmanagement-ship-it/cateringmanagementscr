@@ -1,0 +1,70 @@
+<div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Id Card Details</h5>
+    </div>
+
+    <div class="card-body p-4">
+        <div class="row g-2 align-items-center mb-2">
+            <!-- Search Bar -->
+            <div class="col-12 col-md-9">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        Select Licensee &nbsp; <i class="bi bi-search"></i>
+                    </span>
+
+                    <ng-select [items]="unitList" bindValue="id" bindLabel="contarct_details"
+                        placeholder="Choose a licensee..." [searchable]="true" (change)="onLicenseeChange($event)"
+                        style="width: 70%;">
+
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.contarct_details }}
+                        </ng-template>
+                    </ng-select>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="table-responsive" id="printSection">
+            <h5 style="text-align: center;">Unit wise Approved ID Cards Details of the {{userDivision}} Division</h5>
+            <table class="table table-bordered align-middle">
+
+                <thead class="table-bordered">
+                    <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Designation</th>
+                        <th>Aadhar</th>
+                        <th>Valid Up To</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let element of liveidcards">
+                        <td [ngClass]="getBgColor(element.status_update)">{{element.name}}</td>
+                        <td [ngClass]="getBgColor(element.status_update)">{{element.gender}}</td>
+                        <!-- Add this new cell -->
+                        <td [ngClass]="getBgColor(element.status_update)">{{element.designation}}</td>
+                        <td [ngClass]="getBgColor(element.status_update)">{{element.aadhar_number}}</td>
+                        <td [ngClass]="getBgColor(element.status_update)">{{element.valid_upto | date:'dd-MM-yyyy'}}
+                        </td>
+                        <td [ngClass]="getBgColor(element.status_update)">{{ getStatus(element.status_update) }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-primary" (click)="Resetidcardprint(element.id)"
+                                    title="Print / Reset ID Card">
+                                    <i class="bi bi-printer"></i> <!-- Print icon -->
+                                    <i class="bi bi-arrow-counterclockwise ms-1"></i> <!-- Reset icon -->
+                                </button>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
